@@ -97,6 +97,14 @@ Now to run a PCA (Principal Component Analysis).
 so <- RunPCA(so, features = VariableFeatures(so))
 ```
 
+```{r, include=F}
+# Benchmark
+pca_prof <- function() {
+	RunPCA(so, features = VariableFeatures(so))
+}
+profvis(pca_prof())
+```
+
 Now there is a 'pca' reduction listed in the object.
 ```{r}
 so
@@ -158,6 +166,13 @@ num_dims <- 15
 so <- RunUMAP(so, dims=1:num_dims)
 ```
 
+```{r, include = F}
+umap_prof <- function() {
+	RunUMAP(so, dims=1:15)
+}
+profvis(umap_prof())
+```
+
 
 
 And plot it - Here coloured by the tissue sample.
@@ -207,6 +222,14 @@ Likewise, it can also be helpful to plot a few genes at this point. We can provi
 ```{r}
 FeaturePlot(so, c('CD74','PIGR','IGHA1','VWF'), ncol=2 )
 ```
+
+```{r, include=F}
+fp <- function() {
+  FeaturePlot(so, c('CD74','PIGR','IGHA1','VWF'), ncol=2 )
+}
+profvis(fp())
+```
+
 
 
 
