@@ -45,6 +45,13 @@ https://genomebiology.biomedcentral.com/articles/10.1186/s13059-024-03303-w and 
 so <- NormalizeData(so)
 ```
 
+```{r, include=F}
+sct <- function() {
+  SCTransform(so)
+}
+profvis(sct())
+```
+
 ## Find Highly variable genes.
 
 

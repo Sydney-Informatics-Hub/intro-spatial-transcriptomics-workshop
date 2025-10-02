@@ -36,6 +36,17 @@ This is one of the most computationally intensive steps of the analysis. It can 
 
 
 This is the code to the integration and generate a new UMAP. Do not run this code today!
+
+```{r, include=F}
+harmony <- function() {
+  x <- IntegrateLayers(so, method = HarmonyIntegration, orig.reduction = "pca", new.reduction = "harmony")
+  x <- RunUMAP(x, dims=1:20, reduction = 'harmony')
+  x <- FindNeighbors(x, reduction = "harmony", dims = 1:20)
+  x <- FindClusters(x, resolution = 2.4)
+}
+profvis(harmony())
+```
+
 ```{r eval=FALSE}
   # https://satijalab.org/seurat/articles/seurat5_integration
   # Slow?
