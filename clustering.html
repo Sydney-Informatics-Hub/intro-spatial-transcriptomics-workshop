@@ -82,10 +82,10 @@
 <p>To generate clusters, we first build a ‘neighbourhood’ graph. This is a network graph, that links up cells on the basis of their transcriptional similarity (‘neighbours’). Its not something for looking at directly, its simply stored inside the object, but its an important input for downstream steps like clustering.</p>
 <p>Forget to run it and you’ll generate an error.</p>
 <p>Note that we need to specify the ‘harmony’ reduction, else it would default to ‘pca’. Just like the UMAP, we want our clusters to represent different cell types or states, not the differences between individuals.</p>
-<div class="sourceCode" id="cb103"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb86"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">so</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/FindNeighbors.html">FindNeighbors</a></span><span class="op">(</span><span class="va">so</span>, reduction <span class="op">=</span> <span class="st">"harmony"</span>, dims <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">15</span><span class="op">)</span></span></code></pre></div>
 <p>Now clustering can be as simple as running ‘FindClusters’.</p>
-<div class="sourceCode" id="cb104"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb87"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">so</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/FindClusters.html">FindClusters</a></span><span class="op">(</span><span class="va">so</span><span class="op">)</span>  </span></code></pre></div>
 <pre><code>## Modularity Optimizer version 1.3.0 by Ludo Waltman and Nees Jan van Eck
 ## 
@@ -95,18 +95,18 @@
 ## Running Louvain algorithm...
 ## Maximum modularity in 10 random starts: 0.8206
 ## Number of communities: 12
-## Elapsed time: 12 seconds</code></pre>
-<div class="sourceCode" id="cb106"><pre class="downlit sourceCode r">
+## Elapsed time: 13 seconds</code></pre>
+<div class="sourceCode" id="cb89"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://satijalab.org/seurat/reference/DimPlot.html">DimPlot</a></span><span class="op">(</span><span class="va">so</span>, group.by<span class="op">=</span><span class="st">'seurat_clusters'</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-75-1.png" width="672"></div>
+<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-71-1.png" width="672"></div>
 <p>For the rest of the workshop, we’ll use stick with that resolution of 0.8 - which was actually the default.</p>
 <p>In real life, choosing a clustering resolution can be a cyclic process with cell type labelling. The ‘correct’ level of clustering is one that lets you answer the biological questions you are interested in. To broad and you’ll have heterogeneity in your clusters, or too specific and and you’ll have somewhat arbitrary clusters with too few cells to test anything. You may need to use different levels of clustering for different analyses, or choose to make sub-clusters in one particular celltype of interest.</p>
 <p>The <a href="https://doi.org/10.1093/gigascience/giy083">clustree</a> package can be a useful tool to evaluate different levels of clustering. There is an example of its use <a href="https://swbioinf.github.io/scRNAseqInR_Doco/clustering.html">here</a> in the context of single cell transcriptomics.</p>
-<div class="sourceCode" id="cb107"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb90"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">so</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/FindClusters.html">FindClusters</a></span><span class="op">(</span><span class="va">so</span>, resolution <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span>  </span></code></pre></div>
-<div class="sourceCode" id="cb108"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb91"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://satijalab.org/seurat/reference/DimPlot.html">DimPlot</a></span><span class="op">(</span><span class="va">so</span>, group.by<span class="op">=</span><span class="st">'seurat_clusters'</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-77-1.png" width="672"></div>
+<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-73-1.png" width="672"></div>
 
 </div>
 </div>
@@ -134,7 +134,7 @@
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Intro to Spatial Transcriptomics</strong>" was written by . It was last built on 2025-10-09.</p>
+    <p>"<strong>Intro to Spatial Transcriptomics</strong>" was written by . It was last built on 2025-10-10.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

@@ -6,14 +6,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Chapter 6 Understanding our spatial data | Intro to Spatial Transcriptomics</title>
 <meta name="author" content="">
-<meta name="description" content="6.1 Overview Explain e.g. cosmx in detail, refer to similarities in e.g. xenium Load data into object Brief explanation of different data structures Sample annotation: Applying sample names to...">
+<meta name="description" content="6.1 Learning objectives   6.2 Overview library(Seurat) library(SeuratObject) library(tidyverse) library(here) Conducting processing and data analysis steps with open source, third-party...">
 <meta name="generator" content="bookdown 0.44.2 with bs4_book()">
 <meta property="og:title" content="Chapter 6 Understanding our spatial data | Intro to Spatial Transcriptomics">
 <meta property="og:type" content="book">
-<meta property="og:description" content="6.1 Overview Explain e.g. cosmx in detail, refer to similarities in e.g. xenium Load data into object Brief explanation of different data structures Sample annotation: Applying sample names to...">
+<meta property="og:description" content="6.1 Learning objectives   6.2 Overview library(Seurat) library(SeuratObject) library(tidyverse) library(here) Conducting processing and data analysis steps with open source, third-party...">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Chapter 6 Understanding our spatial data | Intro to Spatial Transcriptomics">
-<meta name="twitter:description" content="6.1 Overview Explain e.g. cosmx in detail, refer to similarities in e.g. xenium Load data into object Brief explanation of different data structures Sample annotation: Applying sample names to...">
+<meta name="twitter:description" content="6.1 Learning objectives   6.2 Overview library(Seurat) library(SeuratObject) library(tidyverse) library(here) Conducting processing and data analysis steps with open source, third-party...">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
 <script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.7.0/transition.js"></script><script src="libs/bs3compat-0.7.0/tabs.js"></script><script src="libs/bs3compat-0.7.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
@@ -75,145 +75,251 @@
 <h1>
 <span class="header-section-number">6</span> Understanding our spatial data<a class="anchor" aria-label="anchor" href="#understanding-our-spatial-data"><i class="fas fa-link"></i></a>
 </h1>
-<div id="overview-1" class="section level2" number="6.1">
+<div id="learning-objectives-1" class="section level2" number="6.1">
 <h2>
-<span class="header-section-number">6.1</span> Overview<a class="anchor" aria-label="anchor" href="#overview-1"><i class="fas fa-link"></i></a>
+<span class="header-section-number">6.1</span> Learning objectives<a class="anchor" aria-label="anchor" href="#learning-objectives-1"><i class="fas fa-link"></i></a>
 </h2>
-<ul>
-<li>Explain e.g. cosmx in detail, refer to similarities in e.g. xenium</li>
-<li>Load data into object</li>
-<li>Brief explanation of different data structures</li>
-<li>Sample annotation: Applying sample names to individual slides. Mention difficulty of multiple samples per slide (can we recommend some approach?)</li>
-</ul>
-<p>What data do you get? How do these differ between CosMX and Xenium?</p>
-<p>High-resolution molecular data:</p>
-<ul>
-<li>Expression matrix</li>
-<li>Transcript coordinates</li>
-<li>Read quality</li>
-</ul>
-<p>Spatial and imaging data:</p>
-<ul>
-<li>Cell segmentations</li>
-<li>Image files</li>
-</ul>
 </div>
-<div id="how-the-data-was-generated" class="section level2" number="6.2">
+<div id="overview-1" class="section level2" number="6.2">
 <h2>
-<span class="header-section-number">6.2</span> How the data was generated<a class="anchor" aria-label="anchor" href="#how-the-data-was-generated"><i class="fas fa-link"></i></a>
+<span class="header-section-number">6.2</span> Overview<a class="anchor" aria-label="anchor" href="#overview-1"><i class="fas fa-link"></i></a>
 </h2>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://satijalab.org/seurat">Seurat</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://satijalab.github.io/seurat-object/">SeuratObject</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://here.r-lib.org/">here</a></span><span class="op">)</span></span></code></pre></div>
+<p>Conducting processing and data analysis steps with open source, third-party
+software/packages provides flexibility and supports a range of different
+analyses. However, there are key steps undertaken before you can load your data
+into R/Python.</p>
 </div>
 <div id="the-raw-data" class="section level2" number="6.3">
 <h2>
 <span class="header-section-number">6.3</span> The raw data<a class="anchor" aria-label="anchor" href="#the-raw-data"><i class="fas fa-link"></i></a>
 </h2>
-<p>For a cosmx SMI slide (like this experiment).</p>
-<ul>
-<li>
-<strong>Flat files</strong> : Most of what we need to do processing. Typically a directory of flat files is read in as a whole, and we don’t need to worry too much. But note there are no images in here.
-<ul>
-<li>SLIDE-polygons.csv.gz : Cell borders</li>
-<li>SLIDE_exprMat_file.csv.gz : Counts of genes per cell (Counts matrix)</li>
-<li>SLIDE_fov_positions_file.csv.gz : Location of FOVs on slide</li>
-<li>SLIDE_metadata_file.csv.gz : Cell level QC metadata</li>
-<li>SLIDE_tx_file.csv.gz : Location of individual transcripts.</li>
-</ul>
-</li>
-<li>
-<strong>Raw files</strong> : Giant ugly directory with lots of files including microscopy images.
-<ul>
-<li>RawFiles/SLIDE/RUN_CODE/CellStatsDir/Morphology2D : Location of images</li>
-<li><a href="https://github.com/Nanostring-Biostats/CosMxDACustomModules/blob/main/Export/CosMxDAExportSetup.docx" class="uri">https://github.com/Nanostring-Biostats/CosMxDACustomModules/blob/main/Export/CosMxDAExportSetup.docx</a></li>
-</ul>
-</li>
-</ul>
-<p>For a Xenium slide there is just the one typical output directory; they discuss the formats in the section on <a href="https://www.10xgenomics.com/support/software/xenium-onboard-analysis/latest/analysis/xoa-output-archive-data">data archiving</a>, but again, software tools take the directory as a whole.</p>
+<div class="inline-figure"><img src="images/30_data/data_generation.png"></div>
+<p>The files generated by high-resolution spatial transcriptomics platforms, such
+as the CosMx Spatial Molecular Imager (SMI), are typically categorised based on
+their processing stage. The <strong>Raw Files</strong> contain the primary output from the
+instrument’s run, necessary for decoding and spatial assignment, while the
+<strong>Flat Files</strong> represent the aggregated, cell-level data ready for statistical
+analysis in R or other environments.</p>
+<div id="raw-files" class="section level3" number="6.3.1">
+<h3>
+<span class="header-section-number">6.3.1</span> Raw files<a class="anchor" aria-label="anchor" href="#raw-files"><i class="fas fa-link"></i></a>
+</h3>
+<p>The raw files represent the initial, large-volume data output directly from the
+imaging instrument after the spatial transcriptomics experiment is complete.
+This directory contains all the key imaging and log information required to
+computationally process the raw fluorescent signals into <strong>quantifiable transcript
+locations and cellular boundaries</strong>.</p>
+<p>Key raw folders and files contain essential data used for <strong>segmentation and
+cell coordinate mapping</strong>. For example, the <code>CellStatsDir/Morphology2D</code> folder
+holds the images, including those generated from immunofluorescence staining
+(e.g., DAPI, PanCK, CD45), which are vital inputs for cell segmentation, as the
+<strong>raw gene expression measurements are initially at the transcript level, not the
+cell level</strong>.</p>
+<p>Additionally, the <code>RunSummary/</code> directory contains the instrument configuration
+files necessary for accurately converting image pixels into physical slide X-Y
+coordinates.</p>
+<div class="inline-table"><table class="table table-sm">
+<colgroup>
+<col width="35%">
+<col width="64%">
+</colgroup>
+<thead><tr class="header">
+<th>Folder / File Name</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code>Flowcell_Folder/</code></td>
+<td>Root directory containing logs and slide/run data</td>
+</tr>
+<tr class="even">
+<td><code>Logs/</code></td>
+<td>FOV coordinate files</td>
+</tr>
+<tr class="odd">
+<td><code>GSM7473682_HC_a_S1/</code></td>
+<td>Main data directory for slide <code>GSM7473682_HC_a</code>, slot 1</td>
+</tr>
+<tr class="even">
+<td><code>plex_001.csv</code></td>
+<td>Target probes metadata</td>
+</tr>
+<tr class="odd">
+<td><code>CellStatsDir/</code></td>
+<td>Segmentation outputs (labels, overlays, morphology images)</td>
+</tr>
+<tr class="even">
+<td><code>CellStatsDir/</code></td>
+<td>Location of high-resolution images</td>
+</tr>
+<tr class="odd">
+<td><code>RunSummary/</code></td>
+<td>Instrument configuration files (e.g. pixel–nm ratio)</td>
+</tr>
+<tr class="even">
+<td><code>AnalysisResults/</code></td>
+<td>Processed analysis outputs (FOV summaries, detection limits, coordinates)</td>
+</tr>
+</tbody>
+</table></div>
+<p>Data retrieved from
+<a href="https://github.com/Nanostring-Biostats/CosMxDACustomModules/blob/main/Export/CosMxDAExportSetup.docx">CosMxDACustomModules</a>.</p>
 </div>
-<div id="cell-segmentation" class="section level2" number="6.4">
-<h2>
-<span class="header-section-number">6.4</span> Cell segmentation<a class="anchor" aria-label="anchor" href="#cell-segmentation"><i class="fas fa-link"></i></a>
-</h2>
-<ul>
-<li>Out of scope for workshop</li>
-<li>commercial options</li>
-<li>Third party tools often recommended: image-based (cellpose), transcript-based (proseg), hybrid (baysor), segmentation-free approaches</li>
-<li>Deep learning commonly applied here</li>
-</ul>
+<div id="flat-files" class="section level3" number="6.3.2">
+<h3>
+<span class="header-section-number">6.3.2</span> Flat files<a class="anchor" aria-label="anchor" href="#flat-files"><i class="fas fa-link"></i></a>
+</h3>
+<div class="rmdimportant">
+<p><strong>You do not need to access every one of these files!</strong></p>
+<p>Most of what we need to do processing. Typically a directory of flat files is
+read in as a whole, and we don’t need to worry too much. But note there are no
+images in here.</p>
 </div>
-<div id="note-on-seuratloadnanostring" class="section level2" number="6.5">
+<p>The flat files contain the organised, post-processing outputs from a pipeline
+(like AtoMx SIP) that are directly ready for loading into R packages such as
+<code>Seurat</code>.</p>
+<p>These files come after cell segmentation, where the <strong>single-molecule data are
+summarised into count matrices at the single-cell level</strong>. The main file,
+<code>SLIDE_exprMat_file.csv.gz</code>, contains the counts of genes per cell.</p>
+<div class="rmdimportant">
+<p><strong>A note on cell segmentation</strong></p>
+<p>Cell segmentation is the computational step in imaging-based ST that
+identifies the boundaries of individual cells so that RNA molecules can be
+correctly assigned to each one.</p>
+<p>It uses nuclear (DAPI) and/or membrane stains to group transcript locations
+into a cell-by-gene count matrix and cell border shapes (polygons) for
+downstream analysis.</p>
+<p>Accurate segmentation is essential because it determines how reliably
+transcripts are assigned to individual cells, which directly affects
+downstream analyses. Commercial platforms like CosMx and Xenium include
+segmentation in their processing pipelines.</p>
+<p>However, you may choose to re-run segmentation using independent tools such as
+Cellpose (image-based) or Baysor (transcript-based or hybrid) to improve
+boundary accuracy and adapt to specific tissue types.</p>
+</div>
+<p>Additionally, key metadata files are read in alongside the gene counts which
+inform the spatial coordinates of FoVs (<code>SLIDE_fov_positions_file.csv.gz</code>),
+transcripts (<code>SLIDE_tx_file.csv.gz</code>), and segmented cell boundaries
+(<code>SLIDE-polygons.csv.gz</code>).</p>
+<div class="inline-table"><table class="table table-sm">
+<colgroup>
+<col width="44%">
+<col width="55%">
+</colgroup>
+<thead><tr class="header">
+<th>File name</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code>SLIDE-polygons.csv.gz</code></td>
+<td>Cell borders</td>
+</tr>
+<tr class="even">
+<td><code>SLIDE_exprMat_file.csv.gz</code></td>
+<td>Counts of genes per cell (counts matrix)</td>
+</tr>
+<tr class="odd">
+<td><code>SLIDE_fov_positions_file.csv.gz</code></td>
+<td>Location of FOVs on slide</td>
+</tr>
+<tr class="even">
+<td><code>SLIDE_metadata_file.csv.gz</code></td>
+<td>Cell-level QC metadata</td>
+</tr>
+<tr class="odd">
+<td><code>SLIDE_tx_file.csv.gz</code></td>
+<td>Location of individual transcripts</td>
+</tr>
+</tbody>
+</table></div>
+<div class="rmdimportant">
+<p><strong>Xenium data</strong></p>
+<p>For a Xenium slide there is just the one typical output directory; they discuss
+the formats in the section on
+<a href="https://www.10xgenomics.com/support/software/xenium-onboard-analysis/latest/analysis/xoa-output-archive-data">data archiving</a>,
+but again, software tools take the directory as a whole.</p>
+</div>
+</div>
+</div>
+<div id="importing-the-flat-files-into-r" class="section level2" number="6.4">
 <h2>
-<span class="header-section-number">6.5</span> Note on <code>Seurat::LoadNanostring()</code><a class="anchor" aria-label="anchor" href="#note-on-seuratloadnanostring"><i class="fas fa-link"></i></a>
+<span class="header-section-number">6.4</span> Importing the flat files into R<a class="anchor" aria-label="anchor" href="#importing-the-flat-files-into-r"><i class="fas fa-link"></i></a>
 </h2>
-<p>Load the libraries required for this step.</p>
-<pre><code>## Loading required package: SeuratObject</code></pre>
-<pre><code>## Loading required package: sp</code></pre>
-<pre><code>## 
-## Attaching package: 'SeuratObject'</code></pre>
-<pre><code>## The following objects are masked from 'package:base':
-## 
-##     intersect, t</code></pre>
-<pre><code>## ── Attaching core tidyverse packages ────── tidyverse 2.0.0 ──
-## ✔ dplyr     1.1.4     ✔ readr     2.1.5
-## ✔ forcats   1.0.0     ✔ stringr   1.5.1
-## ✔ ggplot2   3.5.2     ✔ tibble    3.3.0
-## ✔ lubridate 1.9.4     ✔ tidyr     1.3.1
-## ✔ purrr     1.1.0     
-## ── Conflicts ──────────────────────── tidyverse_conflicts() ──
-## ✖ dplyr::filter() masks stats::filter()
-## ✖ dplyr::lag()    masks stats::lag()
-## ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors
-## here() starts at /home/fred/GitHub/intro-spatial-transcriptomics-workshop</code></pre>
-<p>To load the data, we can use the <code><a href="https://satijalab.org/seurat/reference/ReadNanostring.html">Seurat::LoadNanostring()</a></code> function. However,
-this default method drops most of the metadata in the Seurat object. For example,
-what field of view (FoV) each cell a member of is missing.</p>
+<div class="rmdwarning">
+<p><strong>A note on <code><a href="https://satijalab.org/seurat/reference/ReadNanostring.html">Seurat::LoadNanostring()</a></code></strong></p>
+<p>To load the flat files into R, we can use the <code><a href="https://satijalab.org/seurat/reference/ReadNanostring.html">Seurat::LoadNanostring()</a></code> function.
+However, this default method <strong>drops most of the metadata in the Seurat object</strong>.
+For example, what field of view (FoV) each cell a member of is missing.</p>
 <p>We provide an alternate function. In time, this should be fixed within Seurat.
-See comments <a href="https://github.com/satijalab/seurat/discussions/9261">here</a></p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="fu">here</span><span class="op">(</span><span class="st">"scripts/LoadNanostring_edited_function.R"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">example_path</span> <span class="op">&lt;-</span> <span class="fu">here</span><span class="op">(</span><span class="st">"raw_data"</span>, <span class="st">"GSM7473682_HC_a"</span><span class="op">)</span></span>
-<span><span class="va">example_so</span> <span class="op">&lt;-</span> <span class="fu">LoadNanostring</span><span class="op">(</span><span class="va">example_path</span>, assay<span class="op">=</span><span class="st">'RNA'</span>, fov<span class="op">=</span><span class="st">"GSM7473682_HC_a"</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">example_so</span></span></code></pre></div>
-<pre class="console"><code>An object of class Seurat 
-999 features across 42045 samples within 1 assay 
-Active assay: RNA (999 features, 0 variable features)
- 1 layer present: counts
- 1 spatial field of view present: GSM7473682_HC_a</code></pre>
-<p>Explain what’s missing</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">#so$condition       &lt;- "Healthy Controls"</span></span>
-<span><span class="co">#so$tissue_sample   &lt;- "HC_A" # denotes healthy control, from sample A</span></span></code></pre></div>
+See comments <a href="https://github.com/satijalab/seurat/discussions/9261">here</a>. This
+is an example code snippet using the replacement function:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Import the custom LoadNanostring() function</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="fu"><a href="https://here.r-lib.org/reference/here.html">here</a></span><span class="op">(</span><span class="st">"scripts/LoadNanostring_edited_function.R"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Define the path to the flat files. Note that the input is the whole directory.</span></span>
+<span><span class="co"># The function deals with reading and assigning the metadata correctly to the</span></span>
+<span><span class="co"># cells and gene counts</span></span>
+<span><span class="va">example_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://here.r-lib.org/reference/here.html">here</a></span><span class="op">(</span><span class="st">"raw_data"</span>, <span class="st">"GSM7473682_HC_a/"</span><span class="op">)</span></span>
+<span><span class="va">example_so</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/ReadNanostring.html">LoadNanostring</a></span><span class="op">(</span><span class="va">example_path</span>, assay<span class="op">=</span><span class="st">'RNA'</span>, fov<span class="op">=</span><span class="st">"GSM7473682.HC.a"</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="loading-all-samples-from-raw-data" class="section level2" number="6.6">
+</div>
+<div id="loading-the-subsampled-workshop-data" class="section level2" number="6.5">
 <h2>
-<span class="header-section-number">6.6</span> Loading all samples from raw data<a class="anchor" aria-label="anchor" href="#loading-all-samples-from-raw-data"><i class="fas fa-link"></i></a>
+<span class="header-section-number">6.5</span> Loading the subsampled workshop data<a class="anchor" aria-label="anchor" href="#loading-the-subsampled-workshop-data"><i class="fas fa-link"></i></a>
 </h2>
 <p>We use a subsampled data for this workshop, for three healthy control samples (HC)
 and three Crohn’s disease samples (CD).</p>
-<p>The first four field of views are used.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># How was this created?</span></span>
-<span><span class="va">seurat_file_00_raw</span> <span class="op">&lt;-</span> <span class="fu">here</span><span class="op">(</span><span class="st">"data"</span>, <span class="st">"GSE234713_CosMx_IBD_seurat_00_raw.RDS"</span><span class="op">)</span></span>
+<p>The first four field of views for each sample are used.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Code to subset the data</span></span>
+<span><span class="va">seurat_file_00_raw</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://here.r-lib.org/reference/here.html">here</a></span><span class="op">(</span><span class="st">"data"</span>, <span class="st">"GSE234713_CosMx_IBD_seurat_00_raw.RDS"</span><span class="op">)</span></span>
 <span><span class="va">so_raw_full</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="va">seurat_file_00_raw</span><span class="op">)</span></span>
 <span><span class="va">so_raw_subset</span> <span class="op">&lt;-</span> <span class="va">so_raw_full</span><span class="op">[</span>, <span class="va">so_raw_full</span><span class="op">$</span><span class="va">group</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"CD"</span>, <span class="st">"HC"</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">so_raw_full</span><span class="op">@</span><span class="va">meta.data</span><span class="op">$</span><span class="va">fov</span> <span class="op">&lt;=</span> <span class="fl">4</span><span class="op">]</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span><span class="op">(</span><span class="va">so_raw_subset</span>, <span class="fu">here</span><span class="op">(</span><span class="st">"data"</span>, <span class="st">"GSE234713_CosMx_IBD_seurat_00_raw_subsampled.RDS"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div id="loading-the-workshop-data" class="section level2" number="6.7">
-<h2>
-<span class="header-section-number">6.7</span> Loading the workshop data<a class="anchor" aria-label="anchor" href="#loading-the-workshop-data"><i class="fas fa-link"></i></a>
-</h2>
-<p>TODO: Add image for all FOVs, and outline the ones we are using</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">so_path</span> <span class="op">&lt;-</span> <span class="fu">here</span><span class="op">(</span><span class="st">"data"</span>, <span class="st">"GSE234713_CosMx_IBD_seurat_00_raw_subsampled.RDS"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span><span class="op">(</span><span class="va">so_raw_subset</span>, <span class="fu"><a href="https://here.r-lib.org/reference/here.html">here</a></span><span class="op">(</span><span class="st">"data"</span>, <span class="st">"GSE234713_CosMx_IBD_seurat_00_raw_subsampled.RDS"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Load the prepared data</span></span>
+<span><span class="va">so_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://here.r-lib.org/reference/here.html">here</a></span><span class="op">(</span><span class="st">"data"</span>, <span class="st">"GSE234713_CosMx_IBD_seurat_00_raw_subsampled.RDS"</span><span class="op">)</span></span>
 <span><span class="va">so</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="va">so_path</span><span class="op">)</span></span></code></pre></div>
-<div id="understanding-the-seuratobject" class="section level3" number="6.7.1">
+</div>
+<div id="visualising-our-spatial-data" class="section level2" number="6.6">
+<h2>
+<span class="header-section-number">6.6</span> Visualising our spatial data<a class="anchor" aria-label="anchor" href="#visualising-our-spatial-data"><i class="fas fa-link"></i></a>
+</h2>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">hc_idents</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">so</span><span class="op">$</span><span class="va">orig.ident</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span></span>
+<span><span class="va">cd_idents</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">so</span><span class="op">$</span><span class="va">orig.ident</span><span class="op">)</span><span class="op">[</span><span class="fl">4</span><span class="op">:</span><span class="fl">6</span><span class="op">]</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="va">hc_idents</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/ImageDimPlot.html">ImageDimPlot</a></span><span class="op">(</span><span class="va">so</span>, fov <span class="op">=</span> <span class="va">i</span>, group.by <span class="op">=</span> <span class="st">"fov_name"</span>, axes <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+<p><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-9-1.png" width="672"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-9-2.png" width="672"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-9-3.png" width="672"></p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="va">cd_idents</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/ImageDimPlot.html">ImageDimPlot</a></span><span class="op">(</span><span class="va">so</span>, fov <span class="op">=</span> <span class="va">i</span>, group.by <span class="op">=</span> <span class="st">"fov_name"</span>, axes <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+<p><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-10-1.png" width="672"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-10-2.png" width="672"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-10-3.png" width="672"></p>
+<div class="rmdimportant">
+<p><strong>Xenium does not have FOVs</strong></p>
+<p>Xenium uses a wide-field fluorescence microscope for automated image
+acquisition across a larger, continuous imaging area. This approach allows
+Xenium to map gene expression over the entire tissue region selected by the
+user, rather than stitching together multiple small, distinct FOV images.</p>
+</div>
+<div id="understanding-the-seuratobject" class="section level3" number="6.6.1">
 <h3>
-<span class="header-section-number">6.7.1</span> Understanding the <code>SeuratObject</code><a class="anchor" aria-label="anchor" href="#understanding-the-seuratobject"><i class="fas fa-link"></i></a>
+<span class="header-section-number">6.6.1</span> Understanding the <code>SeuratObject</code><a class="anchor" aria-label="anchor" href="#understanding-the-seuratobject"><i class="fas fa-link"></i></a>
 </h3>
-<div id="why-seurat" class="section level4 callout-info" number="6.7.1.1">
-<h4>
-<span class="header-section-number">6.7.1.1</span> Why Seurat?<a class="anchor" aria-label="anchor" href="#why-seurat"><i class="fas fa-link"></i></a>
-</h4>
+<div class="rmdnote">
+<p><strong>Why Seurat?</strong></p>
 <p>Seurat objects are a data structure to store the count data and additional metadata.
 As the data is very high dimensional, it is important
 that connected information about cells, samples, and data stay connected
@@ -224,19 +330,25 @@ needs above. Differences in compatibility with other tools.</p>
 <p>Flexibility across single-cell transcriptomics.</p>
 </div>
 <p>Display the Seurat object.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">so</span></span></code></pre></div>
+<pre><code>## An object of class Seurat 
+## 999 features across 68624 samples within 2 assays 
+## Active assay: RNA (980 features, 0 variable features)
+##  6 layers present: counts.GSM7473682.HC.a, counts.GSM7473683.HC.b, counts.GSM7473684.HC.c, counts.GSM7473688.CD.a, counts.GSM7473689.CD.b, counts.GSM7473690.CD.c
+##  1 other assay present: negprobes
+##  6 spatial fields of view present: GSM7473682.HC.a GSM7473683.HC.b GSM7473684.HC.c GSM7473688.CD.a GSM7473689.CD.b GSM7473690.CD.c</code></pre>
 <p><strong>999 features across 68624 samples with 2 assays</strong></p>
 <ul>
 <li>980 genes + 19 negprobes</li>
-<li>68k number of segmented cells analysed</li>
-<li>two different types of measurements, detailed below</li>
+<li>68.6k number of segmented cells analysed</li>
+<li>Two different types of measurements, detailed below</li>
 </ul>
 <p><strong>Active assay: RNA (980 features, 0 variable features):</strong></p>
 <ul>
 <li>RNA assay: Primary gene expression measurement data (counts)</li>
 <li>980 transcripts measured</li>
-<li>no variable features as feature selection has not been conducted yet</li>
+<li>No variable features as feature selection has not been conducted yet</li>
 </ul>
 <p><strong>6 layers present: counts.GSM7473682.HC.a, counts.GSM7473683.HC.b,
 counts.GSM7473684.HC.c, counts.GSM7473688.CD.a, counts.GSM7473689.CD.b,
@@ -257,23 +369,27 @@ identified above. This demonstrates that the data set is ready for spatially
 resolved analysis and visualisation, allowing results (like cell clusters or
 gene expression) to be mapped back onto the original tissue sections for all
 six integrated samples.</p>
-<div id="cosmx-sample-names" class="section level4 callout-tip" number="6.7.1.2">
-<h4>
-<span class="header-section-number">6.7.1.2</span> CosMX sample names<a class="anchor" aria-label="anchor" href="#cosmx-sample-names"><i class="fas fa-link"></i></a>
-</h4>
+<div class="rmdimportant">
+<p><strong>CosMx FOVs and sample names</strong></p>
 <p>Note that the field of view names are delimited by <code>.</code>. At the time of writing,
 underscores will cause some functions to fail silently. For more information,
 see <a href="https://github.com/satijalab/seurat/issues/10103">this issue</a></p>
 </div>
-<div id="xenium" class="section level4 callout-tip" number="6.7.1.3">
-<h4>
-<span class="header-section-number">6.7.1.3</span> Xenium<a class="anchor" aria-label="anchor" href="#xenium"><i class="fas fa-link"></i></a>
-</h4>
-<p>Xenium does not have FoVs.</p>
-<p>TODO: expand</p>
 </div>
-<p>Display the metadata</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div id="exploring-the-metadata" class="section level3" number="6.6.2">
+<h3>
+<span class="header-section-number">6.6.2</span> Exploring the metadata<a class="anchor" aria-label="anchor" href="#exploring-the-metadata"><i class="fas fa-link"></i></a>
+</h3>
+<p>Along with the transcript counts per-cell, metadata tracks other central
+information such as its experimental details. This is important so we know which
+groups to compare downstream (HC vs. UC). This study has one sample per slide,
+but there are typically more. Examples of metadata include:</p>
+<ul>
+<li>The spatial coordinates of your cells and genes</li>
+<li>Segmented cell boundaries</li>
+<li>Which tissue sample and FOV data belongs to</li>
+</ul>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">so</span><span class="op">@</span><span class="va">meta.data</span><span class="op">)</span></span></code></pre></div>
 <pre><code>##               orig.ident nCount_RNA nFeature_RNA fov cell_ID  Area AspectRatio
 ## HC_a_1_1 GSM7473682.HC.a        366          187   1       1  6153        0.67
@@ -317,35 +433,6 @@ see <a href="https://github.com/satijalab/seurat/issues/10103">this issue</a></p
 ## HC_a_4_1                0                  0
 ## HC_a_5_1                3                  2
 ## HC_a_6_1                8                  5</code></pre>
-<div class="inline-table"><table class="table table-sm">
-<thead><tr class="header">
-<th>Column</th>
-<th>Definition</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td>Row name</td>
-<td>The sample and cell</td>
-</tr>
-<tr class="even">
-<td><code>orig.ident</code></td>
-<td>Sample</td>
-</tr>
-<tr class="odd">
-<td><code>nCount RNA</code></td>
-<td>The number of sequenced transcripts</td>
-</tr>
-<tr class="even">
-<td><code>nFeature_RNA</code></td>
-<td>The number of transcripts mapped to a gene</td>
-</tr>
-</tbody>
-</table></div>
-<p>Each sample should be annotated with its experimental details. This is important
-so we know which groups to compare downstream, i.e. case vs. control comparison.
-This particular study has one sample per slide (easy!), but there are typically
-more.</p>
-<p>TODO: Explain input data, what it represents, how it will be used for analysis.</p>
 <p>TODO: Define terms like centroids, segments, fov</p>
 <ul>
 <li>See: <a href="https://satijalab.org/seurat/articles/seurat5_spatial_vignette_2#mouse-brain-vizgen-merscope" class="uri">https://satijalab.org/seurat/articles/seurat5_spatial_vignette_2#mouse-brain-vizgen-merscope</a>
@@ -353,7 +440,7 @@ more.</p>
 <li>TODO: Excalidraw of these</li>
 </ul>
 <p>Display the metadata columns:</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">so</span><span class="op">@</span><span class="va">meta.data</span><span class="op">)</span></span></code></pre></div>
 <pre><code>##  [1] "orig.ident"         "nCount_RNA"         "nFeature_RNA"      
 ##  [4] "fov"                "cell_ID"            "Area"              
@@ -368,11 +455,11 @@ more.</p>
 ## [31] "nFeature_negprobes"</code></pre>
 <p>There is a lot of information. Use something like skimr for EDA and to
 understand each field at a glance</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">skimr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/skimr/reference/skim.html">skim</a></span><span class="op">(</span><span class="va">so</span><span class="op">@</span><span class="va">meta.data</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-table"><table class="table table-sm">
 <caption>
-<span id="tab:unnamed-chunk-13">Table 6.1: </span>Data summary</caption>
+<span id="tab:unnamed-chunk-14">Table 6.1: </span>Data summary</caption>
 <tbody>
 <tr class="odd">
 <td align="left">Name</td>
@@ -857,54 +944,19 @@ each, and only the CD and HC sample groups.</p>
 <p>seurat fov = slide
 bruker cosmx fov = region on slide</p>
 <p>View the <code>tissue_sample</code> metadata to prepare for the next step. This represents</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">so</span><span class="op">$</span><span class="va">tissue_sample</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## 
 ##  CD_a  CD_b  CD_c  HC_a  HC_b  HC_c 
 ##  7539 13199 13606  8795 15766  9719</code></pre>
 </div>
 </div>
-<div id="visualising-our-spatial-data" class="section level2" number="6.8">
+<div id="count-data-assays" class="section level2" number="6.7">
 <h2>
-<span class="header-section-number">6.8</span> Visualising our spatial data<a class="anchor" aria-label="anchor" href="#visualising-our-spatial-data"><i class="fas fa-link"></i></a>
+<span class="header-section-number">6.7</span> Count data (<code>assays</code>)<a class="anchor" aria-label="anchor" href="#count-data-assays"><i class="fas fa-link"></i></a>
 </h2>
-<p>Visualise clusters in a spatial context</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">so</span><span class="op">$</span><span class="va">orig.ident</span><span class="op">)</span></span></code></pre></div>
-<pre><code>## 
-## GSM7473682.HC.a GSM7473683.HC.b GSM7473684.HC.c GSM7473688.CD.a GSM7473689.CD.b 
-##            8795           15766            9719            7539           13199 
-## GSM7473690.CD.c 
-##           13606</code></pre>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">hc_idents</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">so</span><span class="op">$</span><span class="va">orig.ident</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span></span>
-<span><span class="va">cd_idents</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">so</span><span class="op">$</span><span class="va">orig.ident</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span></span>
-<span><span class="fu">ImageDimPlot</span><span class="op">(</span><span class="va">so</span>, fov <span class="op">=</span> <span class="va">hc_idents</span>, group.by <span class="op">=</span> <span class="st">"fov_name"</span>, axes <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-16-1.png" width="672"></div>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">hc_idents</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">so</span><span class="op">$</span><span class="va">orig.ident</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span></span>
-<span><span class="fu">ImageDimPlot</span><span class="op">(</span><span class="va">so</span>, fov <span class="op">=</span> <span class="va">hc_idents</span>, group.by <span class="op">=</span> <span class="st">"fov_name"</span>, axes <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-17-1.png" width="672"></div>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">cd_idents</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">so</span><span class="op">$</span><span class="va">orig.ident</span><span class="op">)</span><span class="op">[</span><span class="fl">4</span><span class="op">:</span><span class="fl">6</span><span class="op">]</span></span>
-<span><span class="fu">ImageDimPlot</span><span class="op">(</span><span class="va">so</span>, fov <span class="op">=</span> <span class="va">cd_idents</span>, group.by <span class="op">=</span> <span class="st">"fov_name"</span>, axes <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-18-1.png" width="672"></div>
-<p>By an individual gene.</p>
-<p>Do not need fov_name this time</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">ImageFeaturePlot</span><span class="op">(</span><span class="va">so</span>, fov <span class="op">=</span> <span class="st">"GSM7473682.HC.a"</span>, features <span class="op">=</span> <span class="st">"S100A6"</span><span class="op">)</span></span></code></pre></div>
-<pre class="console"><code>Warning: No layers found matching search pattern provided
-Warning in FetchData.Assay5(object = object[[DefaultAssay(object = object)]],  :
-  data layer is not found and counts layer is used</code></pre>
-<p>Cannot use <code>ImageFeaturePlot</code> yet, without normalisation, dim red etc.</p>
-</div>
-<div id="count-data-assays" class="section level2" number="6.9">
-<h2>
-<span class="header-section-number">6.9</span> Count data (<code>assays</code>)<a class="anchor" aria-label="anchor" href="#count-data-assays"><i class="fas fa-link"></i></a>
-</h2>
-<p>Where are my counts?</p>
-<p>TODO: Excalidraw flowchart of assays</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="inline-figure"><img src="images/30_data/count_assays.png"></div>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">so</span><span class="op">@</span><span class="va">assays</span></span></code></pre></div>
 <pre><code>## $RNA
 ## Assay (v5) data with 980 features for 68624 cells
@@ -922,11 +974,11 @@ Warning in FetchData.Assay5(object = object[[DefaultAssay(object = object)]],  :
 ## Layers:
 ##  counts.GSM7473682.HC.a, counts.GSM7473683.HC.b, counts.GSM7473684.HC.c,
 ## counts.GSM7473688.CD.a, counts.GSM7473689.CD.b, counts.GSM7473690.CD.c</code></pre>
-<div id="gene-expression-count-matrices" class="section level3" number="6.9.1">
+<div id="gene-expression-count-matrices" class="section level3" number="6.7.1">
 <h3>
-<span class="header-section-number">6.9.1</span> Gene expression count matrices<a class="anchor" aria-label="anchor" href="#gene-expression-count-matrices"><i class="fas fa-link"></i></a>
+<span class="header-section-number">6.7.1</span> Gene expression count matrices<a class="anchor" aria-label="anchor" href="#gene-expression-count-matrices"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">so</span><span class="op">@</span><span class="va">assays</span><span class="op">$</span><span class="va">RNA</span><span class="op">$</span><span class="va">counts.GSM7473682.HC.a</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span></code></pre></div>
 <pre><code>## 5 x 5 sparse Matrix of class "dgCMatrix"
 ##        HC_a_1_1 HC_a_2_1 HC_a_3_1 HC_a_4_1 HC_a_5_1
@@ -938,13 +990,13 @@ Warning in FetchData.Assay5(object = object[[DefaultAssay(object = object)]],  :
 <p>Row = gene</p>
 <p>Column = cell for the sample</p>
 </div>
-<div id="negative-probes" class="section level3" number="6.9.2">
+<div id="negative-probes" class="section level3" number="6.7.2">
 <h3>
-<span class="header-section-number">6.9.2</span> Negative probes<a class="anchor" aria-label="anchor" href="#negative-probes"><i class="fas fa-link"></i></a>
+<span class="header-section-number">6.7.2</span> Negative probes<a class="anchor" aria-label="anchor" href="#negative-probes"><i class="fas fa-link"></i></a>
 </h3>
 <p>Explain that negprobes are negative controls to see how noisy your data is.
 These do not bind to anything etc.</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">so</span><span class="op">@</span><span class="va">assays</span><span class="op">$</span><span class="va">negprobes</span></span></code></pre></div>
 <pre><code>## Assay (v5) data with 19 features for 68624 cells
 ## First 10 features:
@@ -953,20 +1005,17 @@ These do not bind to anything etc.</p>
 ## Layers:
 ##  counts.GSM7473682.HC.a, counts.GSM7473683.HC.b, counts.GSM7473684.HC.c,
 ## counts.GSM7473688.CD.a, counts.GSM7473689.CD.b, counts.GSM7473690.CD.c</code></pre>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">so</span><span class="op">@</span><span class="va">assays</span><span class="op">$</span><span class="va">negprobes</span><span class="op">)</span></span></code></pre></div>
 <pre><code>##  [1] "NegPrb19" "NegPrb11" "NegPrb5"  "NegPrb16" "NegPrb3"  "NegPrb7" 
 ##  [7] "NegPrb12" "NegPrb8"  "NegPrb20" "NegPrb15" "NegPrb13" "NegPrb23"
 ## [13] "NegPrb10" "NegPrb9"  "NegPrb22" "NegPrb14" "NegPrb6"  "NegPrb21"
 ## [19] "NegPrb18"</code></pre>
 <p>19 different negative probes.</p>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">so</span><span class="op">@</span><span class="va">assays</span><span class="op">$</span><span class="va">negprobes</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span></code></pre></div>
-<pre><code>## Warning in LayerData.Assay5(object = x, layer = i, ...): multiple layers are identified by counts.GSM7473682.HC.a counts.GSM7473683.HC.b counts.GSM7473684.HC.c counts.GSM7473688.CD.a counts.GSM7473689.CD.b counts.GSM7473690.CD.c
-##  only the first layer is used</code></pre>
-<pre><code>## 19 x 8795 sparse Matrix of class "dgCMatrix"</code></pre>
-<pre><code>##   [[ suppressing 33 column names 'HC_a_1_1', 'HC_a_2_1', 'HC_a_3_1' ... ]]</code></pre>
-<pre><code>##                                                                           
+<pre><code>## 19 x 8795 sparse Matrix of class "dgCMatrix"
+##                                                                           
 ## NegPrb19 1 1 . . . . . 1 . . . . . . . . . . . . . . . . . . . . . . . 1 .
 ## NegPrb11 1 . . . . . . . . 2 . . . . . . . . . . . . . . . 1 . 1 . . . . .
 ## NegPrb5  . 2 . . . 2 . . . . . . . . . . . . . . . . . . 1 . . . . . . . .
@@ -1021,20 +1070,26 @@ These do not bind to anything etc.</p>
     <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
       <ul class="nav navbar-nav">
 <li><a class="nav-link" href="#understanding-our-spatial-data"><span class="header-section-number">6</span> Understanding our spatial data</a></li>
-<li><a class="nav-link" href="#overview-1"><span class="header-section-number">6.1</span> Overview</a></li>
-<li><a class="nav-link" href="#how-the-data-was-generated"><span class="header-section-number">6.2</span> How the data was generated</a></li>
-<li><a class="nav-link" href="#the-raw-data"><span class="header-section-number">6.3</span> The raw data</a></li>
-<li><a class="nav-link" href="#cell-segmentation"><span class="header-section-number">6.4</span> Cell segmentation</a></li>
-<li><a class="nav-link" href="#note-on-seuratloadnanostring"><span class="header-section-number">6.5</span> Note on Seurat::LoadNanostring()</a></li>
-<li><a class="nav-link" href="#loading-all-samples-from-raw-data"><span class="header-section-number">6.6</span> Loading all samples from raw data</a></li>
+<li><a class="nav-link" href="#learning-objectives-1"><span class="header-section-number">6.1</span> Learning objectives</a></li>
+<li><a class="nav-link" href="#overview-1"><span class="header-section-number">6.2</span> Overview</a></li>
 <li>
-<a class="nav-link" href="#loading-the-workshop-data"><span class="header-section-number">6.7</span> Loading the workshop data</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#understanding-the-seuratobject"><span class="header-section-number">6.7.1</span> Understanding the SeuratObject</a></li></ul>
+<a class="nav-link" href="#the-raw-data"><span class="header-section-number">6.3</span> The raw data</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#raw-files"><span class="header-section-number">6.3.1</span> Raw files</a></li>
+<li><a class="nav-link" href="#flat-files"><span class="header-section-number">6.3.2</span> Flat files</a></li>
+</ul>
 </li>
-<li><a class="nav-link" href="#visualising-our-spatial-data"><span class="header-section-number">6.8</span> Visualising our spatial data</a></li>
+<li><a class="nav-link" href="#importing-the-flat-files-into-r"><span class="header-section-number">6.4</span> Importing the flat files into R</a></li>
+<li><a class="nav-link" href="#loading-the-subsampled-workshop-data"><span class="header-section-number">6.5</span> Loading the subsampled workshop data</a></li>
 <li>
-<a class="nav-link" href="#count-data-assays"><span class="header-section-number">6.9</span> Count data (assays)</a><ul class="nav navbar-nav">
-<li><a class="nav-link" href="#gene-expression-count-matrices"><span class="header-section-number">6.9.1</span> Gene expression count matrices</a></li>
-<li><a class="nav-link" href="#negative-probes"><span class="header-section-number">6.9.2</span> Negative probes</a></li>
+<a class="nav-link" href="#visualising-our-spatial-data"><span class="header-section-number">6.6</span> Visualising our spatial data</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#understanding-the-seuratobject"><span class="header-section-number">6.6.1</span> Understanding the SeuratObject</a></li>
+<li><a class="nav-link" href="#exploring-the-metadata"><span class="header-section-number">6.6.2</span> Exploring the metadata</a></li>
+</ul>
+</li>
+<li>
+<a class="nav-link" href="#count-data-assays"><span class="header-section-number">6.7</span> Count data (assays)</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#gene-expression-count-matrices"><span class="header-section-number">6.7.1</span> Gene expression count matrices</a></li>
+<li><a class="nav-link" href="#negative-probes"><span class="header-section-number">6.7.2</span> Negative probes</a></li>
 </ul>
 </li>
 </ul>
@@ -1053,7 +1108,7 @@ These do not bind to anything etc.</p>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Intro to Spatial Transcriptomics</strong>" was written by . It was last built on 2025-10-09.</p>
+    <p>"<strong>Intro to Spatial Transcriptomics</strong>" was written by . It was last built on 2025-10-10.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
