@@ -287,11 +287,32 @@ and three Crohn’s disease samples (CD).</p>
 <code class="sourceCode R"><span><span class="co"># Load the prepared data</span></span>
 <span><span class="va">so_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://here.r-lib.org/reference/here.html">here</a></span><span class="op">(</span><span class="st">"data"</span>, <span class="st">"GSE234713_CosMx_IBD_seurat_00_raw_subsampled.RDS"</span><span class="op">)</span></span>
 <span><span class="va">so</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="va">so_path</span><span class="op">)</span></span></code></pre></div>
+<div class="rmdimportant">
+<p><strong>Analysing large data sets with Sketch-based integration</strong></p>
+<p>When analysing your own data, it is often necessary to work with the entire
+data set rather than an arbitrary subsample, as simple subsampling can omit
+important biological information or spatial regions. However, processing very
+large data sets can be computationally demanding.</p>
+<div class="inline-figure"><img src="images/30_data/geosketch.png"></div>
+<p>Sketch-based analysis offers a practical solution by selecting a representative
+subset of cells that preserves the overall structure and diversity of the full
+data set. Instead of arbitrarily subsetting by fields of view (FoVs), this
+approach uses geometric sketching to capture both common and rare cell
+populations. You can <strong>perform initial preprocessing steps on this smaller subset
+and then extend the results back to the complete dataset for downstream analyses.</strong></p>
+<p>For more details, see Seurat’s sketch-based analysis vignette<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;&lt;a href="https://satijalab.org/seurat/articles/seurat5_sketch_analysis" class="uri"&gt;https://satijalab.org/seurat/articles/seurat5_sketch_analysis&lt;/a&gt;&lt;/p&gt;'><sup>2</sup></a><span class="math inline">\(^,\)</span><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;&lt;a href="https://satijalab.org/seurat/articles/parsebio_sketch_integration" class="uri"&gt;https://satijalab.org/seurat/articles/parsebio_sketch_integration&lt;/a&gt;&lt;/p&gt;'><sup>3</sup></a> and the
+GeoSketch method description<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;&lt;a href="https://cb.csail.mit.edu/geosketch/" class="uri"&gt;https://cb.csail.mit.edu/geosketch/&lt;/a&gt;&lt;/p&gt;'><sup>4</sup></a> for a Python alternative.</p>
+</div>
 </div>
 <div id="visualising-our-spatial-data" class="section level2" number="6.6">
 <h2>
 <span class="header-section-number">6.6</span> Visualising our spatial data<a class="anchor" aria-label="anchor" href="#visualising-our-spatial-data"><i class="fas fa-link"></i></a>
 </h2>
+<p>TODO: add note on plotting H&amp;E image - unavailable with this data.</p>
+<ul>
+<li>Need to import into stutility, which is not compatible with v5 Seurat</li>
+<li><a href="https://satijalab.org/seurat/articles/spatial_vignette" class="uri">https://satijalab.org/seurat/articles/spatial_vignette</a></li>
+</ul>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">hc_idents</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">so</span><span class="op">$</span><span class="va">orig.ident</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span></span>
 <span><span class="va">cd_idents</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">so</span><span class="op">$</span><span class="va">orig.ident</span><span class="op">)</span><span class="op">[</span><span class="fl">4</span><span class="op">:</span><span class="fl">6</span><span class="op">]</span></span></code></pre></div>
@@ -1058,11 +1079,24 @@ These do not bind to anything etc.</p>
 ## 
 ##  .....suppressing 8762 columns in show(); maybe adjust options(max.print=, width=)
 ##  ..............................</code></pre>
-<p>In the next lesson,</p>
+</div>
+</div>
+<div id="loading-in-multiple-samples" class="section level2" number="6.8">
+<h2>
+<span class="header-section-number">6.8</span> Loading in multiple samples<a class="anchor" aria-label="anchor" href="#loading-in-multiple-samples"><i class="fas fa-link"></i></a>
+</h2>
+<p>TODO: Example of loading in multiple samples</p>
+<p>TODO: Explanation on splitting and merging layers</p>
+</div>
+<div id="summary" class="section level2" number="6.9">
+<h2>
+<span class="header-section-number">6.9</span> Summary<a class="anchor" aria-label="anchor" href="#summary"><i class="fas fa-link"></i></a>
+</h2>
+<p>TODO</p>
 
 </div>
 </div>
-</div>
+
   <div class="chapter-nav">
 <div class="prev"><a href="aims.html"><span class="header-section-number">5</span> Aims for today</a></div>
 <div class="next"><a href="quality-control-and-filtering.html"><span class="header-section-number">7</span> Quality control and filtering</a></div>
@@ -1092,6 +1126,8 @@ These do not bind to anything etc.</p>
 <li><a class="nav-link" href="#negative-probes"><span class="header-section-number">6.7.2</span> Negative probes</a></li>
 </ul>
 </li>
+<li><a class="nav-link" href="#loading-in-multiple-samples"><span class="header-section-number">6.8</span> Loading in multiple samples</a></li>
+<li><a class="nav-link" href="#summary"><span class="header-section-number">6.9</span> Summary</a></li>
 </ul>
 
       <div class="book-extra">
@@ -1108,7 +1144,7 @@ These do not bind to anything etc.</p>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Intro to Spatial Transcriptomics</strong>" was written by . It was last built on 2025-10-10.</p>
+    <p>"<strong>Intro to Spatial Transcriptomics</strong>" was written by . It was last built on 2025-10-14.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
@@ -1116,6 +1152,34 @@ These do not bind to anything etc.</p>
   </div>
 
 </div></div>
-</footer>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
 </body>
 </html>

@@ -21,6 +21,8 @@ exploring-the-metadata
 count-data-assays
 gene-expression-count-matrices
 negative-probes
+loading-in-multiple-samples
+summary
 quality-control-and-filtering
 learning-objectives-2
 overview-2
@@ -34,7 +36,7 @@ identifying-filtering-thresholds
 activity-identifying-your-own-filtering-thresholds
 applying-the-filter
 field-of-view-qc-cosmx-only-advanced
-summary
+summary-1
 basic-visualisation
 ReducedDimensionality
 normalisation
