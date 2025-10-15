@@ -6,14 +6,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Chapter 9 Reduce dimensionality - UMAPs | Intro to Spatial Transcriptomics</title>
 <meta name="author" content="">
-<meta name="description" content="There are a few steps of number-crunching before we get to generating a nice UMAP representation of our data. Why are these steps needed? Normalisation Different cells have different total target...">
+<meta name="description" content="Before we dive into generating UMAP plots to visualise our spatial data we need to undertake a series of preprocessing steps. These steps are essential for transforming raw, high-dimensional data...">
 <meta name="generator" content="bookdown 0.44.2 with bs4_book()">
 <meta property="og:title" content="Chapter 9 Reduce dimensionality - UMAPs | Intro to Spatial Transcriptomics">
 <meta property="og:type" content="book">
-<meta property="og:description" content="There are a few steps of number-crunching before we get to generating a nice UMAP representation of our data. Why are these steps needed? Normalisation Different cells have different total target...">
+<meta property="og:description" content="Before we dive into generating UMAP plots to visualise our spatial data we need to undertake a series of preprocessing steps. These steps are essential for transforming raw, high-dimensional data...">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Chapter 9 Reduce dimensionality - UMAPs | Intro to Spatial Transcriptomics">
-<meta name="twitter:description" content="There are a few steps of number-crunching before we get to generating a nice UMAP representation of our data. Why are these steps needed? Normalisation Different cells have different total target...">
+<meta name="twitter:description" content="Before we dive into generating UMAP plots to visualise our spatial data we need to undertake a series of preprocessing steps. These steps are essential for transforming raw, high-dimensional data...">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
 <script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.7.0/transition.js"></script><script src="libs/bs3compat-0.7.0/tabs.js"></script><script src="libs/bs3compat-0.7.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
@@ -55,13 +55,13 @@
 <li><a class="" href="aims.html"><span class="header-section-number">5</span> Aims for today</a></li>
 <li><a class="" href="understanding-our-spatial-data.html"><span class="header-section-number">6</span> Understanding our spatial data</a></li>
 <li><a class="" href="quality-control-and-filtering.html"><span class="header-section-number">7</span> Quality control and filtering</a></li>
-<li><a class="" href="basic-visualisation.html"><span class="header-section-number">8</span> Basic visualisation</a></li>
+<li><a class="" href="normalisation-and-scaling.html"><span class="header-section-number">8</span> Normalisation and scaling</a></li>
 <li><a class="active" href="ReducedDimensionality.html"><span class="header-section-number">9</span> Reduce dimensionality - UMAPs</a></li>
 <li><a class="" href="BatchCorrection.html"><span class="header-section-number">10</span> Batch Correction</a></li>
 <li><a class="" href="clustering.html"><span class="header-section-number">11</span> Clustering</a></li>
 <li><a class="" href="ClusterLabelling.html"><span class="header-section-number">12</span> Clustering Labeling</a></li>
 <li><a class="" href="SpatiallyRestrictedGenes.html"><span class="header-section-number">13</span> Spatially Restricted Genes</a></li>
-<li><a class="" href="next-steps.html"><span class="header-section-number">14</span> Next steps</a></li>
+<li><a class="" href="NextSteps.html"><span class="header-section-number">14</span> Next steps</a></li>
 <li><a class="" href="resources.html"><span class="header-section-number">15</span> Resources</a></li>
 <li><a class="" href="references.html">References</a></li>
 </ul>
@@ -75,7 +75,8 @@
 <h1>
 <span class="header-section-number">9</span> Reduce dimensionality - UMAPs<a class="anchor" aria-label="anchor" href="#ReducedDimensionality"><i class="fas fa-link"></i></a>
 </h1>
-<p>There are a few steps of number-crunching before we get to generating a nice UMAP representation of our data.</p>
+<div class="inline-figure"><img src="images/workflows/04_dimred.png" style="width:100.0%"></div>
+<p>Before we dive into generating UMAP plots to visualise our spatial data we need to undertake a series of preprocessing steps. These steps are essential for transforming raw, high-dimensional data into a form that can be meaningfully interpreted.</p>
 <p>Why are these steps needed?</p>
 <ol style="list-style-type: decimal">
 <li>
@@ -91,6 +92,10 @@
 <strong>Run non-linear dimensional reduction (UMAP)</strong>: Finally, make the UMAP plot that arranges our cells in a logical and easy to visualise way. Note the tSNE algorithm (which makes tSNE plots) is an older alternative method to UMAP.</li>
 </ol>
 <div class="inline-figure"><img src="images/genes2umap.png" style="width:100.0%"></div>
+<div class="inline-figure">The difference between normalisation and scaling?
+<img src="images/normandscale.png" style="width:100.0%">
+## Reload data</div>
+<p>To get started, lets launch a fresh R session, and load the libraries we need and the Seurat object form yesterday.</p>
 <div id="normalisation" class="section level2" number="9.1">
 <h2>
 <span class="header-section-number">9.1</span> Normalisation<a class="anchor" aria-label="anchor" href="#normalisation"><i class="fas fa-link"></i></a>
@@ -106,7 +111,7 @@
 <blockquote>
 <p>“LogNormalize: Feature counts for each cell are divided by the total counts for that cell and multiplied by the scale.factor. This is then natural-log transformed using log1’”</p>
 </blockquote>
-<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">so</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/NormalizeData.html">NormalizeData</a></span><span class="op">(</span><span class="va">so</span><span class="op">)</span></span></code></pre></div>
 <p>For a more in-depth discussion of normalisation in spatial datasets see <a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-024-03303-w">Atta et al (2024)</a> and be aware of spatial-aware methods such as <a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-025-03565-y">SpaNorm</a></p>
 </div>
@@ -120,26 +125,26 @@
 <blockquote>
 <p>“Note that since the data is split into layers, normalization and variable feature identification is performed for each batch independently (a consensus set of variable features is automatically identified).”</p>
 </blockquote>
-<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb68"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">so</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/FindVariableFeatures.html">FindVariableFeatures</a></span><span class="op">(</span><span class="va">so</span>, nfeatures <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span></code></pre></div>
 <p>Each point represents one gene - the red ones are our top 200 ‘highly variable genes’ or HVGs. There is no firm rule on how many HVGs we want. For a whole transcriptome that could be 2000, for a 1000 genes we have 200. The exact number doesn’t matter so much; so long as we capture the genes above the main group of low variance genes.</p>
-<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://satijalab.org/seurat/reference/VariableFeaturePlot.html">VariableFeaturePlot</a></span><span class="op">(</span><span class="va">so</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-48-1.png" width="672"></div>
+<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-57-1.png" width="672"></div>
 <p>We can list those genes:</p>
-<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fu"><a href="https://satijalab.github.io/seurat-object/reference/VariableFeatures.html">VariableFeatures</a></span><span class="op">(</span><span class="va">so</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## [1] "IGHM"   "IGHG1"  "TPSB2"  "IGHG2"  "JCHAIN" "TPSAB1"</code></pre>
 </div>
-<div id="scale-data" class="section level2" number="9.3">
+<div id="scale-data-1" class="section level2" number="9.3">
 <h2>
-<span class="header-section-number">9.3</span> Scale data<a class="anchor" aria-label="anchor" href="#scale-data"><i class="fas fa-link"></i></a>
+<span class="header-section-number">9.3</span> Scale data<a class="anchor" aria-label="anchor" href="#scale-data-1"><i class="fas fa-link"></i></a>
 </h2>
 <p>By default, the scaleData function will scale only the HVGs.</p>
-<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">so</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/ScaleData.html">ScaleData</a></span><span class="op">(</span><span class="va">so</span><span class="op">)</span> <span class="co"># Just 200 variable features</span></span></code></pre></div>
 <p>Note the presence of the single ‘scale.data’ layer.</p>
-<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb73"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">so</span></span></code></pre></div>
 <pre><code>## An object of class Seurat 
 ## 999 features across 56853 samples within 2 assays 
@@ -152,11 +157,11 @@
 <h2>
 <span class="header-section-number">9.4</span> PCA<a class="anchor" aria-label="anchor" href="#pca"><i class="fas fa-link"></i></a>
 </h2>
-<p>Now to run a PCA (Principal Component Analysis).</p>
-<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
+<p>Our single-cell (spatial) RNA data is highly dimensional - even with only the 200 highly variable genes (which might be more than 200 in other experiments!). Dimension reduction with PCA is recommended for summarising data based on the most amount of variation (global differences). We will produce ‘principal component’ values to summarise expression in fewer dimension, and use these values in downstream analyses.</p>
+<div class="sourceCode" id="cb75"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">so</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/RunPCA.html">RunPCA</a></span><span class="op">(</span><span class="va">so</span>, features <span class="op">=</span> <span class="fu"><a href="https://satijalab.github.io/seurat-object/reference/VariableFeatures.html">VariableFeatures</a></span><span class="op">(</span><span class="va">so</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Now there is a ‘pca’ reduction listed in the object.</p>
-<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb76"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">so</span></span></code></pre></div>
 <pre><code>## An object of class Seurat 
 ## 999 features across 56853 samples within 2 assays 
@@ -166,7 +171,7 @@
 ##  1 dimensional reduction calculated: pca
 ##  6 spatial fields of view present: GSM7473682.HC.a GSM7473683.HC.b GSM7473684.HC.c GSM7473688.CD.a GSM7473689.CD.b GSM7473690.CD.c</code></pre>
 <p>By peeking into the seurat object, we can see there is a value for each PC (Principal Component) for each cell.</p>
-<div class="sourceCode" id="cb66"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb78"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">so</span><span class="op">@</span><span class="va">reductions</span><span class="op">$</span><span class="va">pca</span><span class="op">@</span><span class="va">cell.embeddings</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span></code></pre></div>
 <pre><code>##                PC_1       PC_2       PC_3       PC_4     PC_5
 ## HC_a_1_1  -6.148807 -2.0908949 -0.4825868  0.4346447 2.251673
@@ -182,9 +187,9 @@
 <p>In some contexts (e.g. Bulk RNAseq experiments), PCs can be enough to group and explore the difference between samples. e.g. See <a href="https://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#principal-component-plot-of-the-samples">this plot in some DEseq2 documentation</a>.</p>
 <p>We can try that here, but because of the sheer number of cells and the diversity among them, it rarely works in spatial or single cell datasets - simply a blob.</p>
 <p>This is PC1 vs PC2.</p>
-<div class="sourceCode" id="cb68"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb80"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://satijalab.org/seurat/reference/DimPlot.html">DimPlot</a></span><span class="op">(</span><span class="va">so</span>, reduction <span class="op">=</span> <span class="st">"pca"</span>, group.by<span class="op">=</span><span class="st">'tissue_sample'</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-55-1.png" width="672"></div>
+<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-64-1.png" width="672"></div>
 <!--DimPlot(so, reduction = "pca", group.by='tissue_sample', dims=c(3,4))-->
 </div>
 <div id="umap" class="section level2" number="9.5">
@@ -204,20 +209,20 @@ multiple principal components into fewer dimensions for visualisation - generall
 <p>To build a UMAP we need to decide how many principal components we want to summarise. An ‘elbow plot’ shows the proportion of variance that is explained by each PC - starting from PC1 - which always explains the most. Eventually the variance explained drops off to a base level - extra PCs aren’t adding much there.</p>
 <p>A general rule of thumb is to pick where the standard variation levels out in the plot below - the ‘elbow’. There is no harm in rounding up. Typically this is between 10-20, and is higher for more complex datasets.</p>
 <p>Here we choose 15.</p>
-<div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb81"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://satijalab.org/seurat/reference/ElbowPlot.html">ElbowPlot</a></span><span class="op">(</span><span class="va">so</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-56-1.png" width="672"></div>
+<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-65-1.png" width="672"></div>
 <p>Then build a UMAP with the first 15 PCs.</p>
-<div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb82"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">num_dims</span> <span class="op">&lt;-</span> <span class="fl">15</span></span>
 <span><span class="va">so</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/RunUMAP.html">RunUMAP</a></span><span class="op">(</span><span class="va">so</span>, dims<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="va">num_dims</span><span class="op">)</span></span></code></pre></div>
 <p>And plot it - Here coloured by the tissue sample.</p>
-<div class="sourceCode" id="cb71"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb83"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># you can specify reduction='umap' explicitly</span></span>
 <span><span class="co"># DimPlot(so, group.by='tissue_sample', reduction = 'umap') </span></span>
 <span><span class="co"># But by default, if a umap exists in the object, Dimplot will plot it.</span></span>
 <span><span class="fu"><a href="https://satijalab.org/seurat/reference/DimPlot.html">DimPlot</a></span><span class="op">(</span><span class="va">so</span>, group.by<span class="op">=</span><span class="st">'tissue_sample'</span><span class="op">)</span> </span></code></pre></div>
-<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-58-1.png" width="672"></div>
+<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-67-1.png" width="672"></div>
 </div>
 <div id="using-umap-to-visualise-your-data" class="section level2" number="9.6">
 <h2>
@@ -233,36 +238,37 @@ multiple principal components into fewer dimensions for visualisation - generall
 <p>We want to identify trends and biases that could be technical or experimentally interesting.</p>
 <p>View categorical factors with ‘DimPlot’, and continuous once with ‘FeaturePlot’. The split.by parameter is quite useful to separate out certain variables, like experimental group.</p>
 <p>There is a little separation by condition - but it appears that it could be due to the individual (we’ll address this next).</p>
-<div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb84"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://satijalab.org/seurat/reference/DimPlot.html">DimPlot</a></span><span class="op">(</span><span class="va">so</span>, group.by<span class="op">=</span><span class="st">'tissue_sample'</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-59-1.png" width="672"></div>
-<div class="sourceCode" id="cb73"><pre class="downlit sourceCode r">
+<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-68-1.png" width="672"></div>
+<div class="sourceCode" id="cb85"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://satijalab.org/seurat/reference/DimPlot.html">DimPlot</a></span><span class="op">(</span><span class="va">so</span>, group.by<span class="op">=</span><span class="st">'condition'</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-59-2.png" width="672"></div>
-<div class="sourceCode" id="cb74"><pre class="downlit sourceCode r">
+<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-68-2.png" width="672"></div>
+<div class="sourceCode" id="cb86"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://satijalab.org/seurat/reference/DimPlot.html">DimPlot</a></span><span class="op">(</span><span class="va">so</span>, group.by<span class="op">=</span><span class="st">'tissue_sample'</span>, split.by<span class="op">=</span><span class="st">'condition'</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-59-3.png" width="672"></div>
-<p>Here we can see that the negative probe counts line up with our total counts. And that higher counts are concentrated in certain regions of the UMAP.</p>
-<div class="sourceCode" id="cb75"><pre class="downlit sourceCode r">
+<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-68-3.png" width="672"></div>
+<p>The metadata contains the number of total counts per cell (nCount_RNA) and total negative probe counts per cell (nCount_negprobes). Here we can see that the negative probe counts line up with our total counts. And that higher counts are concentrated in certain regions of the UMAP.</p>
+<div class="sourceCode" id="cb87"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://satijalab.org/seurat/reference/FeaturePlot.html">FeaturePlot</a></span><span class="op">(</span><span class="va">so</span>, <span class="st">'nCount_RNA'</span><span class="op">)</span> </span></code></pre></div>
-<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-60-1.png" width="672"></div>
-<div class="sourceCode" id="cb76"><pre class="downlit sourceCode r">
+<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-69-1.png" width="672"></div>
+<div class="sourceCode" id="cb88"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://satijalab.org/seurat/reference/FeaturePlot.html">FeaturePlot</a></span><span class="op">(</span><span class="va">so</span>, <span class="st">'nCount_negprobes'</span><span class="op">)</span> </span></code></pre></div>
-<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-60-2.png" width="672"></div>
+<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-69-2.png" width="672"></div>
 <p>But the overall % of negative probes is more random.</p>
-<div class="sourceCode" id="cb77"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb89"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">so</span><span class="op">$</span><span class="va">pc_neg</span> <span class="op">&lt;-</span> <span class="va">so</span><span class="op">$</span><span class="va">nCount_negprobes</span> <span class="op">/</span> <span class="op">(</span><span class="va">so</span><span class="op">$</span><span class="va">nCount_negprobes</span> <span class="op">+</span> <span class="va">so</span><span class="op">$</span><span class="va">nCount_RNA</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span></span>
 <span><span class="fu"><a href="https://satijalab.org/seurat/reference/FeaturePlot.html">FeaturePlot</a></span><span class="op">(</span><span class="va">so</span>, <span class="st">'pc_neg'</span><span class="op">)</span> </span></code></pre></div>
-<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-61-1.png" width="672"></div>
-<p>Likewise, it can also be helpful to plot a few genes at this point. We can provide a list.</p>
-<div class="sourceCode" id="cb78"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://satijalab.org/seurat/reference/FeaturePlot.html">FeaturePlot</a></span><span class="op">(</span><span class="va">so</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'CD74'</span>,<span class="st">'PIGR'</span>,<span class="st">'IGHA1'</span>,<span class="st">'VWF'</span><span class="op">)</span>, ncol<span class="op">=</span><span class="fl">2</span> <span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-62-1.png" width="672"></div>
+<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-70-1.png" width="672"></div>
+<p>Likewise, it can also be helpful/fun to plot a few genes at this point.</p>
+<p>We can provide a list of things we might think will be interesting or identify some cell types we expect to see. Here we show PIGR intestinal epithelial marker, CD74 and IGHA1 for their immune roles and NRG1 because it was discussed in the paper.</p>
+<div class="sourceCode" id="cb90"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://satijalab.org/seurat/reference/FeaturePlot.html">FeaturePlot</a></span><span class="op">(</span><span class="va">so</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'CD74'</span>,<span class="st">'PIGR'</span>,<span class="st">'IGHA1'</span>,<span class="st">'NRG1'</span><span class="op">)</span>, ncol<span class="op">=</span><span class="fl">2</span> <span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-71-1.png" width="672"></div>
 
 </div>
 </div>
   <div class="chapter-nav">
-<div class="prev"><a href="basic-visualisation.html"><span class="header-section-number">8</span> Basic visualisation</a></div>
+<div class="prev"><a href="normalisation-and-scaling.html"><span class="header-section-number">8</span> Normalisation and scaling</a></div>
 <div class="next"><a href="BatchCorrection.html"><span class="header-section-number">10</span> Batch Correction</a></div>
 </div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
     <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
@@ -270,7 +276,7 @@ multiple principal components into fewer dimensions for visualisation - generall
 <li><a class="nav-link" href="#ReducedDimensionality"><span class="header-section-number">9</span> Reduce dimensionality - UMAPs</a></li>
 <li><a class="nav-link" href="#normalisation"><span class="header-section-number">9.1</span> Normalisation</a></li>
 <li><a class="nav-link" href="#find-highly-variable-genes."><span class="header-section-number">9.2</span> Find Highly variable genes.</a></li>
-<li><a class="nav-link" href="#scale-data"><span class="header-section-number">9.3</span> Scale data</a></li>
+<li><a class="nav-link" href="#scale-data-1"><span class="header-section-number">9.3</span> Scale data</a></li>
 <li><a class="nav-link" href="#pca"><span class="header-section-number">9.4</span> PCA</a></li>
 <li><a class="nav-link" href="#umap"><span class="header-section-number">9.5</span> UMAP</a></li>
 <li><a class="nav-link" href="#using-umap-to-visualise-your-data"><span class="header-section-number">9.6</span> Using UMAP to visualise your data</a></li>
@@ -290,7 +296,7 @@ multiple principal components into fewer dimensions for visualisation - generall
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Intro to Spatial Transcriptomics</strong>" was written by . It was last built on 2025-10-14.</p>
+    <p>"<strong>Intro to Spatial Transcriptomics</strong>" was written by . It was last built on 2025-10-15.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

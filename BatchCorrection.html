@@ -55,13 +55,13 @@
 <li><a class="" href="aims.html"><span class="header-section-number">5</span> Aims for today</a></li>
 <li><a class="" href="understanding-our-spatial-data.html"><span class="header-section-number">6</span> Understanding our spatial data</a></li>
 <li><a class="" href="quality-control-and-filtering.html"><span class="header-section-number">7</span> Quality control and filtering</a></li>
-<li><a class="" href="basic-visualisation.html"><span class="header-section-number">8</span> Basic visualisation</a></li>
+<li><a class="" href="normalisation-and-scaling.html"><span class="header-section-number">8</span> Normalisation and scaling</a></li>
 <li><a class="" href="ReducedDimensionality.html"><span class="header-section-number">9</span> Reduce dimensionality - UMAPs</a></li>
 <li><a class="active" href="BatchCorrection.html"><span class="header-section-number">10</span> Batch Correction</a></li>
 <li><a class="" href="clustering.html"><span class="header-section-number">11</span> Clustering</a></li>
 <li><a class="" href="ClusterLabelling.html"><span class="header-section-number">12</span> Clustering Labeling</a></li>
 <li><a class="" href="SpatiallyRestrictedGenes.html"><span class="header-section-number">13</span> Spatially Restricted Genes</a></li>
-<li><a class="" href="next-steps.html"><span class="header-section-number">14</span> Next steps</a></li>
+<li><a class="" href="NextSteps.html"><span class="header-section-number">14</span> Next steps</a></li>
 <li><a class="" href="resources.html"><span class="header-section-number">15</span> Resources</a></li>
 <li><a class="" href="references.html">References</a></li>
 </ul>
@@ -85,13 +85,14 @@
 <p>This example isn’t too bad, but for the purposes of this work, we will go through the process of batch correction.</p>
 <p>Of course - if separation aligns with biological groups of interest, correction may not be appropriate; e.g. a knockout can mean a particular celltype never forms, and there is a region with only wild-type samples. Consider what’s going on in your experiment!</p>
 <p>Additionally, batch effects can occur at different variables. This experiment has one sample per slide, and the batch effect is seen at that level. If we had multiple samples per slide, we would need to identify if the batch effect is at the slide or sample (or other) level, then split the data at that level with the <em>split()</em> function. Here our data is already split by sample/slide - so we can continue on.</p>
-<div class="sourceCode" id="cb79"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://satijalab.org/seurat/reference/DimPlot.html">DimPlot</a></span><span class="op">(</span><span class="va">so</span>, group.by<span class="op">=</span><span class="st">'tissue_sample'</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-63-1.png" width="672"></div>
+<div class="sourceCode" id="cb91"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">p.uncorrected</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/DimPlot.html">DimPlot</a></span><span class="op">(</span><span class="va">so</span>, group.by<span class="op">=</span><span class="st">'tissue_sample'</span><span class="op">)</span></span>
+<span><span class="va">p.uncorrected</span></span></code></pre></div>
+<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-72-1.png" width="672"></div>
 <p>This becomes more obvious if we split the plot by sample as well;</p>
-<div class="sourceCode" id="cb80"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb92"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://satijalab.org/seurat/reference/DimPlot.html">DimPlot</a></span><span class="op">(</span><span class="va">so</span>, group.by<span class="op">=</span><span class="st">'tissue_sample'</span>, split.by <span class="op">=</span> <span class="st">'tissue_sample'</span>, ncol <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-64-1.png" width="672"></div>
+<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-73-1.png" width="672"></div>
 <p>If were were to continue on to cell clustering at analysis at this point, we might find that we build clusters around individual samples.</p>
 </div>
 <div id="running-batch-correction" class="section level2" number="10.2">
@@ -101,13 +102,13 @@
 <p>We can apply a <em>batch correction</em> or <em>integration</em> method to adjust our principal components to de-emphasise the between-sample effect. Seurat implements several such methods, and has a full <a href="https://satijalab.org/seurat/articles/integration_introduction">‘Introduction to scRNA-seq integration’ vignette</a>. We will use the ‘harmony’ method, from <a href="https://www.nature.com/articles/s41592-019-0619-0">Korsunsky et al 2019</a>.</p>
 <p>Its worth noting that these same methods can be applied to combine data from multiple experiments (e.g. public data), or even technologies!</p>
 <p>This can be one of the most computationally intensive steps of the analysis. It can take hours to run and use many Gb of RAM, scaling with the size of your experiment. On this small subset, it will take a minute or two.</p>
-<div class="sourceCode" id="cb81"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb93"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Run harmony </span></span>
 <span><span class="va">so</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/IntegrateLayers.html">IntegrateLayers</a></span><span class="op">(</span><span class="va">so</span>, method <span class="op">=</span> <span class="va">HarmonyIntegration</span>, orig.reduction <span class="op">=</span> <span class="st">"pca"</span>, new.reduction <span class="op">=</span> <span class="st">"harmony"</span><span class="op">)</span></span>
 <span><span class="co"># Make a new UMAP, using the harmony values.</span></span>
 <span><span class="va">so</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/RunUMAP.html">RunUMAP</a></span><span class="op">(</span><span class="va">so</span>, dims<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="va">num_dims</span>, reduction <span class="op">=</span> <span class="st">'harmony'</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://satijalab.org/seurat/reference/DimPlot.html">DimPlot</a></span><span class="op">(</span><span class="va">so</span>, group.by<span class="op">=</span><span class="st">'tissue_sample'</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-65-1.png" width="672"></div>
+<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-74-1.png" width="672"></div>
 <!-- TODO: WHEN P1 ready, ensure object doesn't already have clustering loaded. No point doing it yet. -->
 <!-- Instead, load up a version of the object with this data. -->
 <!-- ```{r} -->
@@ -123,7 +124,8 @@
 <li>
 <strong>umap</strong> : Our new umap which was based on harmony. This overwrote the old UMAP.</li>
 </ul>
-<div class="sourceCode" id="cb82"><pre class="downlit sourceCode r">
+<p>Other downstream analyses may use batch corrected data also e.g. clustering. As a rule of thumb, methods that use PCA ( as a multi-gene-summary ) would use the adjusted harmony scores instead, e.g clustering. The counts and normalised assays remain unchanged - so methods that use those directly (e.g. differential expression, plotting) will need to handle batch correction in their own way (e.g. modelling batch).</p>
+<div class="sourceCode" id="cb94"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">so</span></span></code></pre></div>
 <pre><code>## An object of class Seurat 
 ## 999 features across 56853 samples within 2 assays 
@@ -133,12 +135,14 @@
 ##  3 dimensional reductions calculated: pca, umap, harmony
 ##  6 spatial fields of view present: GSM7473682.HC.a GSM7473683.HC.b GSM7473684.HC.c GSM7473688.CD.a GSM7473689.CD.b GSM7473690.CD.c</code></pre>
 <p>When plotting the new UMAP, the samples are move overlayed. Its a better visualisation, and means our clusters will not be biased to samples.</p>
-<div class="sourceCode" id="cb84"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://satijalab.org/seurat/reference/DimPlot.html">DimPlot</a></span><span class="op">(</span><span class="va">so</span>, group.by<span class="op">=</span><span class="st">'orig.ident'</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-67-1.png" width="672"></div>
-<div class="sourceCode" id="cb85"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb96"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">p.corrected</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/DimPlot.html">DimPlot</a></span><span class="op">(</span><span class="va">so</span>, group.by<span class="op">=</span><span class="st">'tissue_sample'</span><span class="op">)</span></span>
+<span><span class="va">p.uncorrected</span> <span class="op">+</span> <span class="va">p.corrected</span></span></code></pre></div>
+<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-76-1.png" width="672"></div>
+<p>Though, there is still a per-sample difference.</p>
+<div class="sourceCode" id="cb97"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://satijalab.org/seurat/reference/DimPlot.html">DimPlot</a></span><span class="op">(</span><span class="va">so</span>, group.by<span class="op">=</span><span class="st">'tissue_sample'</span>, split.by <span class="op">=</span> <span class="st">'tissue_sample'</span>, ncol <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-68-1.png" width="672"></div>
+<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-77-1.png" width="672"></div>
 
 </div>
 </div>
@@ -167,7 +171,7 @@
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Intro to Spatial Transcriptomics</strong>" was written by . It was last built on 2025-10-14.</p>
+    <p>"<strong>Intro to Spatial Transcriptomics</strong>" was written by . It was last built on 2025-10-15.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

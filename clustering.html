@@ -6,14 +6,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Chapter 11 Clustering | Intro to Spatial Transcriptomics</title>
 <meta name="author" content="">
-<meta name="description" content="11.1 Generate Clusters To generate clusters, we first build a ‘neighbourhood’ graph. This is a network graph, that links up cells on the basis of their transcriptional similarity (‘neighbours’)....">
+<meta name="description" content="For an analysis, we will want to be able to examine different cell types or cell states in our data. Sadly the cells don’t come labelled, and ‘celltypes’ aren’t firm classifications anyway! But we...">
 <meta name="generator" content="bookdown 0.44.2 with bs4_book()">
 <meta property="og:title" content="Chapter 11 Clustering | Intro to Spatial Transcriptomics">
 <meta property="og:type" content="book">
-<meta property="og:description" content="11.1 Generate Clusters To generate clusters, we first build a ‘neighbourhood’ graph. This is a network graph, that links up cells on the basis of their transcriptional similarity (‘neighbours’)....">
+<meta property="og:description" content="For an analysis, we will want to be able to examine different cell types or cell states in our data. Sadly the cells don’t come labelled, and ‘celltypes’ aren’t firm classifications anyway! But we...">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Chapter 11 Clustering | Intro to Spatial Transcriptomics">
-<meta name="twitter:description" content="11.1 Generate Clusters To generate clusters, we first build a ‘neighbourhood’ graph. This is a network graph, that links up cells on the basis of their transcriptional similarity (‘neighbours’)....">
+<meta name="twitter:description" content="For an analysis, we will want to be able to examine different cell types or cell states in our data. Sadly the cells don’t come labelled, and ‘celltypes’ aren’t firm classifications anyway! But we...">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
 <script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.7.0/transition.js"></script><script src="libs/bs3compat-0.7.0/tabs.js"></script><script src="libs/bs3compat-0.7.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
@@ -55,13 +55,13 @@
 <li><a class="" href="aims.html"><span class="header-section-number">5</span> Aims for today</a></li>
 <li><a class="" href="understanding-our-spatial-data.html"><span class="header-section-number">6</span> Understanding our spatial data</a></li>
 <li><a class="" href="quality-control-and-filtering.html"><span class="header-section-number">7</span> Quality control and filtering</a></li>
-<li><a class="" href="basic-visualisation.html"><span class="header-section-number">8</span> Basic visualisation</a></li>
+<li><a class="" href="normalisation-and-scaling.html"><span class="header-section-number">8</span> Normalisation and scaling</a></li>
 <li><a class="" href="ReducedDimensionality.html"><span class="header-section-number">9</span> Reduce dimensionality - UMAPs</a></li>
 <li><a class="" href="BatchCorrection.html"><span class="header-section-number">10</span> Batch Correction</a></li>
 <li><a class="active" href="clustering.html"><span class="header-section-number">11</span> Clustering</a></li>
 <li><a class="" href="ClusterLabelling.html"><span class="header-section-number">12</span> Clustering Labeling</a></li>
 <li><a class="" href="SpatiallyRestrictedGenes.html"><span class="header-section-number">13</span> Spatially Restricted Genes</a></li>
-<li><a class="" href="next-steps.html"><span class="header-section-number">14</span> Next steps</a></li>
+<li><a class="" href="NextSteps.html"><span class="header-section-number">14</span> Next steps</a></li>
 <li><a class="" href="resources.html"><span class="header-section-number">15</span> Resources</a></li>
 <li><a class="" href="references.html">References</a></li>
 </ul>
@@ -75,6 +75,9 @@
 <h1>
 <span class="header-section-number">11</span> Clustering<a class="anchor" aria-label="anchor" href="#clustering"><i class="fas fa-link"></i></a>
 </h1>
+<div class="inline-figure"><img src="images/workflows/05_clustering.png" style="width:100.0%"></div>
+<p>For an analysis, we will want to be able to examine different cell types or cell states in our data. Sadly the cells don’t come labelled, and ‘celltypes’ aren’t firm classifications anyway!
+But we can group together cells with similar expression profiles into ‘clusters’, which we can analyse.</p>
 <div id="generate-clusters" class="section level2" number="11.1">
 <h2>
 <span class="header-section-number">11.1</span> Generate Clusters<a class="anchor" aria-label="anchor" href="#generate-clusters"><i class="fas fa-link"></i></a>
@@ -82,11 +85,34 @@
 <p>To generate clusters, we first build a ‘neighbourhood’ graph. This is a network graph, that links up cells on the basis of their transcriptional similarity (‘neighbours’). Its not something for looking at directly, its simply stored inside the object, but its an important input for downstream steps like clustering.</p>
 <p>Forget to run it and you’ll generate an error.</p>
 <p>Note that we need to specify the ‘harmony’ reduction, else it would default to ‘pca’. Just like the UMAP, we want our clusters to represent different cell types or states, not the differences between individuals.</p>
-<div class="sourceCode" id="cb86"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb98"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">so</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/FindNeighbors.html">FindNeighbors</a></span><span class="op">(</span><span class="va">so</span>, reduction <span class="op">=</span> <span class="st">"harmony"</span>, dims <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">15</span><span class="op">)</span></span></code></pre></div>
 <p>Now clustering can be as simple as running ‘FindClusters’.</p>
-<div class="sourceCode" id="cb87"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">so</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/FindClusters.html">FindClusters</a></span><span class="op">(</span><span class="va">so</span><span class="op">)</span>  </span></code></pre></div>
+<div class="sourceCode" id="cb99"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Resolution generally between 0.1 and 1</span></span>
+<span><span class="va">so</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/FindClusters.html">FindClusters</a></span><span class="op">(</span><span class="va">so</span>, resolution <span class="op">=</span> <span class="fl">0.2</span> <span class="op">)</span>  <span class="co"># A low resolution, fewer clusters</span></span></code></pre></div>
+<pre><code>## Modularity Optimizer version 1.3.0 by Ludo Waltman and Nees Jan van Eck
+## 
+## Number of nodes: 56853
+## Number of edges: 1325795
+## 
+## Running Louvain algorithm...
+## Maximum modularity in 10 random starts: 0.9016
+## Number of communities: 6
+## Elapsed time: 11 seconds</code></pre>
+<div class="sourceCode" id="cb101"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">so</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/FindClusters.html">FindClusters</a></span><span class="op">(</span><span class="va">so</span>, resolution <span class="op">=</span> <span class="fl">1.0</span> <span class="op">)</span>  <span class="co"># high res for more</span></span></code></pre></div>
+<pre><code>## Modularity Optimizer version 1.3.0 by Ludo Waltman and Nees Jan van Eck
+## 
+## Number of nodes: 56853
+## Number of edges: 1325795
+## 
+## Running Louvain algorithm...
+## Maximum modularity in 10 random starts: 0.8021
+## Number of communities: 14
+## Elapsed time: 11 seconds</code></pre>
+<div class="sourceCode" id="cb103"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">so</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/FindClusters.html">FindClusters</a></span><span class="op">(</span><span class="va">so</span>, resolution <span class="op">=</span> <span class="fl">0.8</span> <span class="op">)</span> <span class="co"># the default resolution  </span></span></code></pre></div>
 <pre><code>## Modularity Optimizer version 1.3.0 by Ludo Waltman and Nees Jan van Eck
 ## 
 ## Number of nodes: 56853
@@ -95,18 +121,66 @@
 ## Running Louvain algorithm...
 ## Maximum modularity in 10 random starts: 0.8206
 ## Number of communities: 12
-## Elapsed time: 13 seconds</code></pre>
-<div class="sourceCode" id="cb89"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://satijalab.org/seurat/reference/DimPlot.html">DimPlot</a></span><span class="op">(</span><span class="va">so</span>, group.by<span class="op">=</span><span class="st">'seurat_clusters'</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-71-1.png" width="672"></div>
-<p>For the rest of the workshop, we’ll use stick with that resolution of 0.8 - which was actually the default.</p>
-<p>In real life, choosing a clustering resolution can be a cyclic process with cell type labelling. The ‘correct’ level of clustering is one that lets you answer the biological questions you are interested in. To broad and you’ll have heterogeneity in your clusters, or too specific and and you’ll have somewhat arbitrary clusters with too few cells to test anything. You may need to use different levels of clustering for different analyses, or choose to make sub-clusters in one particular celltype of interest.</p>
+## Elapsed time: 12 seconds</code></pre>
+<div class="sourceCode" id="cb105"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://satijalab.org/seurat/reference/DimPlot.html">DimPlot</a></span><span class="op">(</span><span class="va">so</span>, group.by<span class="op">=</span><span class="st">'RNA_snn_res.0.2'</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-80-1.png" width="672"></div>
+<div class="sourceCode" id="cb106"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://satijalab.org/seurat/reference/DimPlot.html">DimPlot</a></span><span class="op">(</span><span class="va">so</span>, group.by<span class="op">=</span><span class="st">'RNA_snn_res.0.8'</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-80-2.png" width="672"></div>
+<div class="sourceCode" id="cb107"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://satijalab.org/seurat/reference/DimPlot.html">DimPlot</a></span><span class="op">(</span><span class="va">so</span>, group.by<span class="op">=</span><span class="st">'RNA_snn_res.1'</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-80-3.png" width="672"></div>
 <p>The <a href="https://doi.org/10.1093/gigascience/giy083">clustree</a> package can be a useful tool to evaluate different levels of clustering. There is an example of its use <a href="https://swbioinf.github.io/scRNAseqInR_Doco/clustering.html">here</a> in the context of single cell transcriptomics.</p>
-<div class="sourceCode" id="cb90"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">so</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/FindClusters.html">FindClusters</a></span><span class="op">(</span><span class="va">so</span>, resolution <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span>  </span></code></pre></div>
-<div class="sourceCode" id="cb91"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb108"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/lazappi/clustree">clustree</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://lazappi.github.io/clustree/reference/clustree.html">clustree</a></span><span class="op">(</span><span class="va">so</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-81-1.png" width="672"></div>
+<div class="rmdnote">
+<p><strong>ACTIVITY</strong> What clustering resolution should we choose?</p>
+<p>This is hard, because its not our experiment!</p>
+<ul>
+<li>What information would you want to decide? Perhaps consider your own work.</li>
+<li>E.g. Would looking at a known celltype marker with <em>FeaturePlot()</em> help? E.g. PIGR is expressed in the intestinal epithelial</li>
+</ul>
+<p>Put a question or plot in the google doc.</p>
+<!--
+Points to lead discussion:
+
+* What's your want to thing about celltypes of interest in your study - T cell subtypes? o you really want epithelial subtypes. 
+
+* Will one clustering level serve all? You can subtype or have multiple resolutions
+* We don't even have celltype information yet! We can plot a few markers for a rough idea. 
+* This is cyclic!
+* You're the domain expert, you make the call...
+
+-->
+</div>
+<p>In real life, choosing a clustering resolution can be a cyclic process with cell type labelling. The ‘correct’ level of clustering is one that lets you answer the biological questions you are interested in. To broad and you’ll have heterogeneity in your clusters, or too specific and and you’ll have somewhat arbitrary clusters with too few cells to test anything. You may need to use different levels of clustering for different analyses, or choose to make sub-clusters in one particular celltype of interest.</p>
+<p>For the rest of the workshop, we’ll use stick with that resolution of 0.8 - which was actually the default. Because we ran that one last, it is stored in ‘seurat_clusters’</p>
+<div class="sourceCode" id="cb109"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">so</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/FindClusters.html">FindClusters</a></span><span class="op">(</span><span class="va">so</span>, resolution <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span>  <span class="co"># Rerun if you've been trying other resolutions</span></span></code></pre></div>
+<div class="sourceCode" id="cb110"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://satijalab.org/seurat/reference/DimPlot.html">DimPlot</a></span><span class="op">(</span><span class="va">so</span>, group.by<span class="op">=</span><span class="st">'seurat_clusters'</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-73-1.png" width="672"></div>
+<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-83-1.png" width="672"></div>
+<p>And check that our clusters are balanced across samples</p>
+<div class="sourceCode" id="cb111"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## Celltype proportions</span></span>
+<span><span class="va">celltype_summary_table</span><span class="op">&lt;-</span> <span class="va">so</span><span class="op">@</span><span class="va">meta.data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">condition</span>, <span class="va">tissue_sample</span>, <span class="va">seurat_clusters</span> <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span>n_cells <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">celltype_summary_table</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">tissue_sample</span>, y<span class="op">=</span><span class="va">n_cells</span>, fill<span class="op">=</span><span class="va">seurat_clusters</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span><span class="op">(</span>position<span class="op">=</span><span class="st">"fill"</span>, stat<span class="op">=</span><span class="st">"identity"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"bottom"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>expand <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span> <span class="st">"Celltype composition"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">condition</span>, ncol <span class="op">=</span> <span class="fl">1</span>, scales <span class="op">=</span> <span class="st">'free_y'</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-84-1.png" width="672"></div>
 
 </div>
 </div>
@@ -134,7 +208,7 @@
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Intro to Spatial Transcriptomics</strong>" was written by . It was last built on 2025-10-14.</p>
+    <p>"<strong>Intro to Spatial Transcriptomics</strong>" was written by . It was last built on 2025-10-15.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
