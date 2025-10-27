@@ -7,7 +7,7 @@
 <title>Chapter 1 Overview | Intro to Spatial Transcriptomics</title>
 <meta name="author" content="">
 <meta name="description" content="Intro to spatial transcriptomics analysis workshop material">
-<meta name="generator" content="bookdown 0.44.2 with bs4_book()">
+<meta name="generator" content="bookdown 0.45 with bs4_book()">
 <meta property="og:title" content="Chapter 1 Overview | Intro to Spatial Transcriptomics">
 <meta property="og:type" content="book">
 <meta property="og:description" content="Intro to spatial transcriptomics analysis workshop material">
@@ -16,13 +16,13 @@
 <meta name="twitter:description" content="Intro to spatial transcriptomics analysis workshop material">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.7.0/transition.js"></script><script src="libs/bs3compat-0.7.0/tabs.js"></script><script src="libs/bs3compat-0.7.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.9.0/transition.js"></script><script src="libs/bs3compat-0.9.0/tabs.js"></script><script src="libs/bs3compat-0.9.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book-1.0.0/bs4_book.js"></script><link href="libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
 <script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script><link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet">
-<script src="libs/datatables-binding-0.33/datatables.js"></script><link href="libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
+<script src="libs/datatables-binding-0.34.0/datatables.js"></script><link href="libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
 <link href="libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet">
-<script src="libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script><link href="libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet">
-<script src="libs/crosstalk-1.2.1/js/crosstalk.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+<script src="libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script><link href="libs/crosstalk-1.2.2/css/crosstalk.min.css" rel="stylesheet">
+<script src="libs/crosstalk-1.2.2/js/crosstalk.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
     
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
   </style>
@@ -50,19 +50,18 @@
         <ul class="book-toc list-unstyled">
 <li><a class="active" href="index.html"><span class="header-section-number">1</span> Overview</a></li>
 <li><a class="" href="intro.html"><span class="header-section-number">2</span> Introduction</a></li>
-<li><a class="" href="background.html"><span class="header-section-number">3</span> Background</a></li>
-<li><a class="" href="study-overview.html"><span class="header-section-number">4</span> Study overview</a></li>
-<li><a class="" href="aims.html"><span class="header-section-number">5</span> Aims for today</a></li>
-<li><a class="" href="understanding-our-spatial-data.html"><span class="header-section-number">6</span> Understanding our spatial data</a></li>
-<li><a class="" href="quality-control-and-filtering.html"><span class="header-section-number">7</span> Quality control and filtering</a></li>
-<li><a class="" href="normalisation-and-scaling.html"><span class="header-section-number">8</span> Normalisation and scaling</a></li>
-<li><a class="" href="ReducedDimensionality.html"><span class="header-section-number">9</span> Reduce dimensionality - UMAPs</a></li>
-<li><a class="" href="BatchCorrection.html"><span class="header-section-number">10</span> Batch Correction</a></li>
-<li><a class="" href="clustering.html"><span class="header-section-number">11</span> Clustering</a></li>
-<li><a class="" href="ClusterLabelling.html"><span class="header-section-number">12</span> Clustering Labeling</a></li>
-<li><a class="" href="SpatiallyRestrictedGenes.html"><span class="header-section-number">13</span> Spatially Restricted Genes</a></li>
-<li><a class="" href="NextSteps.html"><span class="header-section-number">14</span> Next steps</a></li>
-<li><a class="" href="resources.html"><span class="header-section-number">15</span> Resources</a></li>
+<li><a class="" href="study-background.html"><span class="header-section-number">3</span> Study background</a></li>
+<li><a class="" href="understanding-our-spatial-data.html"><span class="header-section-number">4</span> Understanding our spatial data</a></li>
+<li><a class="" href="quality-control-and-filtering.html"><span class="header-section-number">5</span> Quality control and filtering</a></li>
+<li><a class="" href="normalisation-and-scaling.html"><span class="header-section-number">6</span> Normalisation and scaling</a></li>
+<li><a class="" href="ReducedDimensionality.html"><span class="header-section-number">7</span> Reduce dimensionality - UMAPs</a></li>
+<li><a class="" href="BatchCorrection.html"><span class="header-section-number">8</span> Batch Correction</a></li>
+<li><a class="" href="clustering.html"><span class="header-section-number">9</span> Clustering</a></li>
+<li><a class="" href="ClusterLabelling.html"><span class="header-section-number">10</span> Clustering Labeling</a></li>
+<li><a class="" href="SpatiallyRestrictedGenes.html"><span class="header-section-number">11</span> Spatially Restricted Genes</a></li>
+<li><a class="" href="Summary.html"><span class="header-section-number">12</span> Summary</a></li>
+<li><a class="" href="NextSteps.html"><span class="header-section-number">13</span> Next steps</a></li>
+<li><a class="" href="resources.html"><span class="header-section-number">14</span> Resources</a></li>
 <li><a class="" href="references.html">References</a></li>
 </ul>
 
@@ -75,15 +74,174 @@
 <h1>
 <span class="header-section-number">1</span> Overview<a class="anchor" aria-label="anchor" href="#overview"><i class="fas fa-link"></i></a>
 </h1>
-<p>Overview of spatial transcriptomics workshop.</p>
+<div id="trainers" class="section level2" number="1.1">
+<h2>
+<span class="header-section-number">1.1</span> Trainers<a class="anchor" aria-label="anchor" href="#trainers"><i class="fas fa-link"></i></a>
+</h2>
+<ul>
+<li>Fred Jaya, Sydney Informatics Hub, University of Sydney</li>
+<li>Sarah Williams, Queensland Cyber Infrastructure Foundation Ltd (QCIF)</li>
+</ul>
+</div>
+<div id="prerequisites" class="section level2" number="1.2">
+<h2>
+<span class="header-section-number">1.2</span> Prerequisites<a class="anchor" aria-label="anchor" href="#prerequisites"><i class="fas fa-link"></i></a>
+</h2>
+</div>
+<div id="schedule" class="section level2" number="1.3">
+<h2>
+<span class="header-section-number">1.3</span> Schedule<a class="anchor" aria-label="anchor" href="#schedule"><i class="fas fa-link"></i></a>
+</h2>
+<div id="day-1" class="section level3" number="1.3.1">
+<h3>
+<span class="header-section-number">1.3.1</span> Day 1<a class="anchor" aria-label="anchor" href="#day-1"><i class="fas fa-link"></i></a>
+</h3>
+<div class="inline-table"><table class="table table-sm">
+<thead><tr class="header">
+<th>Time (AEDT)</th>
+<th>Time (AEST)</th>
+<th>Activity</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>13:00</td>
+<td>14:00</td>
+<td>Welcome</td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td>Introduction</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td>Study overview</td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td>Understanding the data</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td>BREAK</td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td>QC &amp; filtering</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td>Normalisation</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div id="day-2" class="section level3" number="1.3.2">
+<h3>
+<span class="header-section-number">1.3.2</span> Day 2<a class="anchor" aria-label="anchor" href="#day-2"><i class="fas fa-link"></i></a>
+</h3>
+<div class="inline-table"><table class="table table-sm">
+<thead><tr class="header">
+<th>Time (AEDT)</th>
+<th>Time (AEST)</th>
+<th>Activity</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>13:00</td>
+<td>14:00</td>
+<td>Welcome</td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td>Dimensional reduction</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td>Batch correction</td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td>BREAK</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td>Clustering and celltypes</td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td>Differential expression</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<div id="setup" class="section level2" number="1.4">
+<h2>
+<span class="header-section-number">1.4</span> Setup<a class="anchor" aria-label="anchor" href="#setup"><i class="fas fa-link"></i></a>
+</h2>
+<ul>
+<li>Check everyone can login to servers</li>
+<li>Explanation on using .Rmd files</li>
+</ul>
+</div>
+<div id="code-of-conduct" class="section level2" number="1.5">
+<h2>
+<span class="header-section-number">1.5</span> Code of conduct<a class="anchor" aria-label="anchor" href="#code-of-conduct"><i class="fas fa-link"></i></a>
+</h2>
+<p>In order to foster a positive and professional learning environment we encourage the following kinds of behaviours at all our events and on our platforms:</p>
+<ul>
+<li>Use welcoming and inclusive language</li>
+<li>Be respectful of different viewpoints and experiences</li>
+<li>Gracefully accept constructive criticism</li>
+<li>Focus on what is best for the community</li>
+<li>Show courtesy and respect towards other community members</li>
+<li>Our full code of conduct, with incident reporting guidelines, is available <a href="https://zenodo.org/records/4276854">here</a>.</li>
+</ul>
+</div>
+<div id="course-survey" class="section level2" number="1.6">
+<h2>
+<span class="header-section-number">1.6</span> Course survey<a class="anchor" aria-label="anchor" href="#course-survey"><i class="fas fa-link"></i></a>
+</h2>
+</div>
+<div id="credits-and-acknowledgements" class="section level2" number="1.7">
+<h2>
+<span class="header-section-number">1.7</span> Credits and acknowledgements<a class="anchor" aria-label="anchor" href="#credits-and-acknowledgements"><i class="fas fa-link"></i></a>
+</h2>
+<p>TODO: logos</p>
 
+</div>
 </div>
   <div class="chapter-nav">
 <div class="empty"></div>
 <div class="next"><a href="intro.html"><span class="header-section-number">2</span> Introduction</a></div>
 </div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
     <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
-      <ul class="nav navbar-nav"><li><a class="nav-link" href="#overview"><span class="header-section-number">1</span> Overview</a></li></ul>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#overview"><span class="header-section-number">1</span> Overview</a></li>
+<li><a class="nav-link" href="#trainers"><span class="header-section-number">1.1</span> Trainers</a></li>
+<li><a class="nav-link" href="#prerequisites"><span class="header-section-number">1.2</span> Prerequisites</a></li>
+<li>
+<a class="nav-link" href="#schedule"><span class="header-section-number">1.3</span> Schedule</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#day-1"><span class="header-section-number">1.3.1</span> Day 1</a></li>
+<li><a class="nav-link" href="#day-2"><span class="header-section-number">1.3.2</span> Day 2</a></li>
+</ul>
+</li>
+<li><a class="nav-link" href="#setup"><span class="header-section-number">1.4</span> Setup</a></li>
+<li><a class="nav-link" href="#code-of-conduct"><span class="header-section-number">1.5</span> Code of conduct</a></li>
+<li><a class="nav-link" href="#course-survey"><span class="header-section-number">1.6</span> Course survey</a></li>
+<li><a class="nav-link" href="#credits-and-acknowledgements"><span class="header-section-number">1.7</span> Credits and acknowledgements</a></li>
+</ul>
 
       <div class="book-extra">
         <ul class="list-unstyled">
@@ -99,7 +257,7 @@
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Intro to Spatial Transcriptomics</strong>" was written by . It was last built on 2025-10-15.</p>
+    <p>"<strong>Intro to Spatial Transcriptomics</strong>" was written by . It was last built on 2025-10-23.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
