@@ -124,9 +124,9 @@ differences in cell morphology and heterogeneous tissue architecture.</p>
 <p>Trade-off between simplicity and performance of methods.</p>
 <div class="inline-table"><table class="table table-sm">
 <colgroup>
-<col width="16%">
-<col width="34%">
-<col width="49%">
+<col width="15%">
+<col width="32%">
+<col width="52%">
 </colgroup>
 <thead><tr class="header">
 <th>Method</th>
@@ -179,7 +179,7 @@ refer to the following resources:</p>
 <!-- #so <- split(so, f = so$orig.ident) -->
 <!-- ``` -->
 <p>Inspect current RNA assay. Layers are <code>counts.*</code> for each sample/FOV.</p>
-<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">so</span><span class="op">@</span><span class="va">assays</span><span class="op">$</span><span class="va">RNA</span></span></code></pre></div>
 <pre><code>## Assay (v5) data with 980 features for 56853 cells
 ## First 10 features:
@@ -187,24 +187,6 @@ refer to the following resources:</p>
 ## Layers:
 ##  counts.GSM7473682.HC.a, counts.GSM7473683.HC.b, counts.GSM7473684.HC.c,
 ## counts.GSM7473688.CD.a, counts.GSM7473689.CD.b, counts.GSM7473690.CD.c</code></pre>
-<p>We will use the ‘LogNormalize’ method in Seurat - as described in the NormaliseData function help:</p>
-<blockquote>
-<p>“LogNormalize: Feature counts for each cell are divided by the total counts for that cell and multiplied by the scale.factor. This is then natural-log transformed using log1’”</p>
-</blockquote>
-<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">so</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/NormalizeData.html">NormalizeData</a></span><span class="op">(</span><span class="va">so</span>, assay <span class="op">=</span> <span class="st">"RNA"</span>, normalization.method <span class="op">=</span> <span class="st">"LogNormalize"</span><span class="op">)</span></span></code></pre></div>
-<p>When displaying the RNA counts assay again, note that there are new
-<code>data</code> layers. These represent our (log-)normalised data.</p>
-<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">so</span><span class="op">@</span><span class="va">assays</span><span class="op">$</span><span class="va">RNA</span></span></code></pre></div>
-<pre><code>## Assay (v5) data with 980 features for 56853 cells
-## First 10 features:
-##  TGFB3, PIGR, MALAT1, MZT2A, IL16, XBP1, S100A6, CCL2, CEACAM1, VSIR 
-## Layers:
-##  counts.GSM7473682.HC.a, counts.GSM7473683.HC.b, counts.GSM7473684.HC.c,
-## counts.GSM7473688.CD.a, counts.GSM7473689.CD.b, counts.GSM7473690.CD.c,
-## data.GSM7473682.HC.a, data.GSM7473683.HC.b, data.GSM7473684.HC.c,
-## data.GSM7473688.CD.a, data.GSM7473689.CD.b, data.GSM7473690.CD.c</code></pre>
 <div class="rmdimportant">
 <p><strong>Choosing a normalisation method is context-dependent</strong></p>
 <p>Normalise:</p>
@@ -226,6 +208,27 @@ that normalisation can remove e.g.</p>
 <p>This is why it is important to store both the <code>counts</code> and <code>data</code>
 layers in your data object.</p>
 </div>
+<p>As we will be identifying spatially variable genes with Moran’s I, we will
+apply a “minimally normalised” approach - the ‘LogNormalize’
+method in Seurat.</p>
+<p>As described in the NormalizeData function help:</p>
+<blockquote>
+<p>“LogNormalize: Feature counts for each cell are divided by the total counts for that cell and multiplied by the scale.factor. This is then natural-log transformed using log1’”</p>
+</blockquote>
+<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">so</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/NormalizeData.html">NormalizeData</a></span><span class="op">(</span><span class="va">so</span>, assay <span class="op">=</span> <span class="st">"RNA"</span>, normalization.method <span class="op">=</span> <span class="st">"LogNormalize"</span><span class="op">)</span></span></code></pre></div>
+<p>When displaying the RNA counts assay again, note that there are new
+<code>data</code> layers. These represent our (log-)normalised data.</p>
+<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">so</span><span class="op">@</span><span class="va">assays</span><span class="op">$</span><span class="va">RNA</span></span></code></pre></div>
+<pre><code>## Assay (v5) data with 980 features for 56853 cells
+## First 10 features:
+##  TGFB3, PIGR, MALAT1, MZT2A, IL16, XBP1, S100A6, CCL2, CEACAM1, VSIR 
+## Layers:
+##  counts.GSM7473682.HC.a, counts.GSM7473683.HC.b, counts.GSM7473684.HC.c,
+## counts.GSM7473688.CD.a, counts.GSM7473689.CD.b, counts.GSM7473690.CD.c,
+## data.GSM7473682.HC.a, data.GSM7473683.HC.b, data.GSM7473684.HC.c,
+## data.GSM7473688.CD.a, data.GSM7473689.CD.b, data.GSM7473690.CD.c</code></pre>
 </div>
 <div id="identifying-highly-variable-genes-hvgs" class="section level2" number="6.4">
 <h2>
@@ -238,14 +241,14 @@ layers in your data object.</p>
 <blockquote>
 <p>“Note that since the data is split into layers, normalization and variable feature identification is performed for each batch independently (a consensus set of variable features is automatically identified).”</p>
 </blockquote>
-<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">so</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/FindVariableFeatures.html">FindVariableFeatures</a></span><span class="op">(</span><span class="va">so</span>, nfeatures <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span></code></pre></div>
 <p>Each point represents one gene - the red ones are our top 200 ‘highly variable genes’ or HVGs. There is no firm rule on how many HVGs we want. For a whole transcriptome that could be 2000, for a 1000 genes we have 200. The exact number doesn’t matter so much; so long as we capture the genes above the main group of low variance genes.</p>
-<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://satijalab.org/seurat/reference/VariableFeaturePlot.html">VariableFeaturePlot</a></span><span class="op">(</span><span class="va">so</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-47-1.png" width="672"></div>
+<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-46-1.png" width="672"></div>
 <p>We can list those genes:</p>
-<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fu"><a href="https://satijalab.github.io/seurat-object/reference/VariableFeatures.html">VariableFeatures</a></span><span class="op">(</span><span class="va">so</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## [1] "IGHM"   "IGHG1"  "TPSB2"  "IGHG2"  "JCHAIN" "TPSAB1"</code></pre>
 </div>
@@ -254,10 +257,10 @@ layers in your data object.</p>
 <span class="header-section-number">6.5</span> Scale data<a class="anchor" aria-label="anchor" href="#scale-data"><i class="fas fa-link"></i></a>
 </h2>
 <p>By default, the scaleData function will scale only the HVGs.</p>
-<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">so</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/ScaleData.html">ScaleData</a></span><span class="op">(</span><span class="va">so</span><span class="op">)</span> <span class="co"># Just 200 variable features</span></span></code></pre></div>
 <p>Note the presence of the single ‘scale.data’ layer.</p>
-<div class="sourceCode" id="cb65"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">so</span></span></code></pre></div>
 <pre><code>## An object of class Seurat 
 ## 999 features across 56853 samples within 2 assays 
@@ -266,7 +269,7 @@ layers in your data object.</p>
 ##  1 other assay present: negprobes
 ##  6 spatial fields of view present: GSM7473682.HC.a GSM7473683.HC.b GSM7473684.HC.c GSM7473688.CD.a GSM7473689.CD.b GSM7473690.CD.c</code></pre>
 <p>Save the object</p>
-<div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb66"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span><span class="op">(</span><span class="va">so</span>, file <span class="op">=</span> <span class="fu"><a href="https://here.r-lib.org/reference/here.html">here</a></span><span class="op">(</span><span class="st">"data"</span>, <span class="st">"GSE234713_CosMx_IBD_seurat_03_normalised.RDS"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 
 </div>
@@ -299,7 +302,7 @@ layers in your data object.</p>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Intro to Spatial Transcriptomics</strong>" was written by . It was last built on 2025-10-23.</p>
+    <p>"<strong>Intro to Spatial Transcriptomics</strong>" was written by . It was last built on 2025-10-28.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

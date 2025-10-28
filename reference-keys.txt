@@ -1,11 +1,7 @@
 tab:unnamed-chunk-11
 overview
 trainers
-prerequisites
-schedule
-day-1
-day-2
-setup
+facilitators-and-coordinators
 code-of-conduct
 course-survey
 credits-and-acknowledgements
@@ -32,7 +28,6 @@ exploring-the-metadata
 count-data-assays
 gene-expression-count-matrices
 negative-probes
-summary
 quality-control-and-filtering
 goals-2
 overview-2
@@ -46,7 +41,7 @@ identifying-filtering-thresholds
 activity-identifying-your-own-filtering-thresholds
 applying-the-filter
 field-of-view-qc-cosmx-only-advanced
-summary-1
+summary
 normalisation-and-scaling
 goals-3
 overview-3

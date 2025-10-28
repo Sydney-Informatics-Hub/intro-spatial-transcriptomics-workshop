@@ -97,10 +97,10 @@ But we can group together cells with similar expression profiles into ‘cluster
 <p>To generate clusters, we first build a ‘neighbourhood’ graph. This is a network graph, that links up cells on the basis of their transcriptional similarity (‘neighbours’). Its not something for looking at directly, its simply stored inside the object, but its an important input for downstream steps like clustering.</p>
 <p>Forget to run it and you’ll generate an error.</p>
 <p>Note that we need to specify the ‘harmony’ reduction, else it would default to ‘pca’. Just like the UMAP, we want our clusters to represent different cell types or states, not the differences between individuals.</p>
-<div class="sourceCode" id="cb92"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb91"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">so</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/FindNeighbors.html">FindNeighbors</a></span><span class="op">(</span><span class="va">so</span>, reduction <span class="op">=</span> <span class="st">"harmony"</span>, dims <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">15</span><span class="op">)</span></span></code></pre></div>
 <p>Now clustering can be as simple as running ‘FindClusters’.</p>
-<div class="sourceCode" id="cb93"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb92"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Resolution generally between 0.1 and 1</span></span>
 <span><span class="va">so</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/FindClusters.html">FindClusters</a></span><span class="op">(</span><span class="va">so</span>, resolution <span class="op">=</span> <span class="fl">0.2</span> <span class="op">)</span>  <span class="co"># A low resolution, fewer clusters</span></span></code></pre></div>
 <pre><code>## Modularity Optimizer version 1.3.0 by Ludo Waltman and Nees Jan van Eck
@@ -111,8 +111,8 @@ But we can group together cells with similar expression profiles into ‘cluster
 ## Running Louvain algorithm...
 ## Maximum modularity in 10 random starts: 0.9016
 ## Number of communities: 6
-## Elapsed time: 11 seconds</code></pre>
-<div class="sourceCode" id="cb95"><pre class="downlit sourceCode r">
+## Elapsed time: 12 seconds</code></pre>
+<div class="sourceCode" id="cb94"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">so</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/FindClusters.html">FindClusters</a></span><span class="op">(</span><span class="va">so</span>, resolution <span class="op">=</span> <span class="fl">1.0</span> <span class="op">)</span>  <span class="co"># high res for more</span></span></code></pre></div>
 <pre><code>## Modularity Optimizer version 1.3.0 by Ludo Waltman and Nees Jan van Eck
 ## 
@@ -122,8 +122,8 @@ But we can group together cells with similar expression profiles into ‘cluster
 ## Running Louvain algorithm...
 ## Maximum modularity in 10 random starts: 0.8021
 ## Number of communities: 14
-## Elapsed time: 11 seconds</code></pre>
-<div class="sourceCode" id="cb97"><pre class="downlit sourceCode r">
+## Elapsed time: 12 seconds</code></pre>
+<div class="sourceCode" id="cb96"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">so</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/FindClusters.html">FindClusters</a></span><span class="op">(</span><span class="va">so</span>, resolution <span class="op">=</span> <span class="fl">0.8</span> <span class="op">)</span> <span class="co"># the default resolution  </span></span></code></pre></div>
 <pre><code>## Modularity Optimizer version 1.3.0 by Ludo Waltman and Nees Jan van Eck
 ## 
@@ -134,20 +134,20 @@ But we can group together cells with similar expression profiles into ‘cluster
 ## Maximum modularity in 10 random starts: 0.8206
 ## Number of communities: 12
 ## Elapsed time: 12 seconds</code></pre>
-<div class="sourceCode" id="cb99"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb98"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://satijalab.org/seurat/reference/DimPlot.html">DimPlot</a></span><span class="op">(</span><span class="va">so</span>, group.by<span class="op">=</span><span class="st">'RNA_snn_res.0.2'</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-72-1.png" width="672"></div>
-<div class="sourceCode" id="cb100"><pre class="downlit sourceCode r">
+<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-71-1.png" width="672"></div>
+<div class="sourceCode" id="cb99"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://satijalab.org/seurat/reference/DimPlot.html">DimPlot</a></span><span class="op">(</span><span class="va">so</span>, group.by<span class="op">=</span><span class="st">'RNA_snn_res.0.8'</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-72-2.png" width="672"></div>
-<div class="sourceCode" id="cb101"><pre class="downlit sourceCode r">
+<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-71-2.png" width="672"></div>
+<div class="sourceCode" id="cb100"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://satijalab.org/seurat/reference/DimPlot.html">DimPlot</a></span><span class="op">(</span><span class="va">so</span>, group.by<span class="op">=</span><span class="st">'RNA_snn_res.1'</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-72-3.png" width="672"></div>
+<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-71-3.png" width="672"></div>
 <p>The <a href="https://doi.org/10.1093/gigascience/giy083">clustree</a> package can be a useful tool to evaluate different levels of clustering. There is an example of its use <a href="https://swbioinf.github.io/scRNAseqInR_Doco/clustering.html">here</a> in the context of single cell transcriptomics.</p>
-<div class="sourceCode" id="cb102"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb101"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/lazappi/clustree">clustree</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://lazappi.github.io/clustree/reference/clustree.html">clustree</a></span><span class="op">(</span><span class="va">so</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-73-1.png" width="672"></div>
+<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-72-1.png" width="672"></div>
 <div class="rmdnote">
 <p><strong>ACTIVITY</strong> What clustering resolution should we choose?</p>
 <ul>
@@ -158,13 +158,13 @@ But we can group together cells with similar expression profiles into ‘cluster
 </div>
 <p>In real life, choosing a clustering resolution can be a cyclic process with cell type labelling. The ‘correct’ level of clustering is one that lets you answer the biological questions you are interested in. To broad and you’ll have heterogeneity in your clusters, or too specific and and you’ll have somewhat arbitrary clusters with too few cells to test anything. You may need to use different levels of clustering for different analyses, or choose to make sub-clusters in one particular celltype of interest.</p>
 <p>For the rest of the workshop, we’ll use stick with that resolution of 0.8 - which was actually the default. Because we ran that one last, it is stored in ‘seurat_clusters’</p>
-<div class="sourceCode" id="cb103"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb102"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">so</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/FindClusters.html">FindClusters</a></span><span class="op">(</span><span class="va">so</span>, resolution <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span>  <span class="co"># Rerun if you've been trying other resolutions</span></span></code></pre></div>
-<div class="sourceCode" id="cb104"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb103"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://satijalab.org/seurat/reference/DimPlot.html">DimPlot</a></span><span class="op">(</span><span class="va">so</span>, group.by<span class="op">=</span><span class="st">'seurat_clusters'</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-75-1.png" width="672"></div>
+<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-74-1.png" width="672"></div>
 <p>What does it look like on the tissue? Our clusters are based purely on transcriptional profiles.</p>
-<div class="sourceCode" id="cb105"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb104"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">so_sample</span> <span class="op">&lt;-</span> <span class="va">so</span><span class="op">[</span>, <span class="va">so</span><span class="op">$</span><span class="va">tissue_sample</span><span class="op">==</span><span class="st">"HC_a"</span><span class="op">]</span></span>
 <span><span class="fu"><a href="https://satijalab.org/seurat/reference/ImageDimPlot.html">ImageDimPlot</a></span><span class="op">(</span><span class="va">so_sample</span>,</span>
 <span>             fov          <span class="op">=</span> <span class="st">"GSM7473682.HC.a"</span>,</span>
@@ -174,9 +174,9 @@ But we can group together cells with similar expression profiles into ‘cluster
 <span>             group.by <span class="op">=</span> <span class="st">"seurat_clusters"</span>,</span>
 <span>             boundaries   <span class="op">=</span> <span class="st">"segmentation"</span>,</span>
 <span>             crop<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-76-1.png" width="672"></div>
+<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-75-1.png" width="672"></div>
 <p>And check that our clusters are balanced across samples. What is happening with CD_b?</p>
-<div class="sourceCode" id="cb106"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb105"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Celltype proportions</span></span>
 <span><span class="va">celltype_summary_table</span><span class="op">&lt;-</span> <span class="va">so</span><span class="op">@</span><span class="va">meta.data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">condition</span>, <span class="va">tissue_sample</span>, <span class="va">seurat_clusters</span> <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
@@ -192,7 +192,7 @@ But we can group together cells with similar expression profiles into ‘cluster
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>expand <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span> <span class="st">"Celltype composition"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">condition</span>, ncol <span class="op">=</span> <span class="fl">1</span>, scales <span class="op">=</span> <span class="st">'free_y'</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-77-1.png" width="672"></div>
+<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-76-1.png" width="672"></div>
 <div class="rmdimportant">
 <p><strong>Spatially aware clustering methods</strong></p>
 <p>Here we are using method based purely on each cells transcriptome. You may perfer to investigate the use of a spatially-aware clustering tool such as <a href="https://arxiv.org/abs/2506.11491">semanticST</a> or others (a rapidly progressing feild).</p>
@@ -226,7 +226,7 @@ But we can group together cells with similar expression profiles into ‘cluster
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Intro to Spatial Transcriptomics</strong>" was written by . It was last built on 2025-10-23.</p>
+    <p>"<strong>Intro to Spatial Transcriptomics</strong>" was written by . It was last built on 2025-10-28.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

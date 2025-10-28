@@ -203,7 +203,10 @@ cell border shapes that are necessary for cell-level analyses downstream.</p>
 <p>The following images are of <strong>Xenium</strong> using two different staining approaches,
 H&amp;E and immunofluorescent respectively,
 with the detected cell boundaries overlayed on both.</p>
-<p><img src="images/30_data/xenium_explorer_he.png" style="width:100.0%"><img src="images/30_data/xenium_explorer_dapi.png" style="width:100.0%"></p>
+<p>The H&amp;E stain is often conducted as part of im-SRT protocols and is used to determine basic cell lineages from the morphology. In CosMx, this is often used to preview the slide for FOV selection.</p>
+<div class="inline-figure"><img src="images/30_data/xenium_explorer_he.png" style="width:100.0%"></div>
+<p>The immunoflourescent stain demarcates more specific subcellular components. This stain is often used in the automated on-machine cell segmentation step.</p>
+<div class="inline-figure"><img src="images/30_data/xenium_explorer_dapi.png" style="width:100.0%"></div>
 <p>Accurate segmentation is essential because it determines how reliably
 transcripts are assigned to individual cells, which directly affects
 downstream analyses. Commercial platforms like CosMx and Xenium include on-machine
@@ -211,6 +214,12 @@ segmentation.</p>
 <p>However, you may choose to re-run segmentation using independent tools such as
 Cellpose (image-based) or Baysor (transcript-based or hybrid) to improve
 boundary accuracy and adapt to specific tissue types.</p>
+<div class="rmdwarning">
+<p><strong>H&amp;E data is not available for this study</strong></p>
+<p>Spatial data analysis steps utilise H&amp;E images for quality control steps and
+visualisation. For the workshop, the transcriptomics and spatial data will be
+used to inform these steps.</p>
+</div>
 
 </div>
 </div>
@@ -249,7 +258,7 @@ boundary accuracy and adapt to specific tissue types.</p>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Intro to Spatial Transcriptomics</strong>" was written by . It was last built on 2025-10-23.</p>
+    <p>"<strong>Intro to Spatial Transcriptomics</strong>" was written by . It was last built on 2025-10-28.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

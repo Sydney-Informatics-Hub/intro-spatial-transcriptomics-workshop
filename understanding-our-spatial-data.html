@@ -957,8 +957,10 @@ shows the table counts the number of cells for each sample.</p>
 <h2>
 <span class="header-section-number">4.7</span> Count data (<code>assays</code>)<a class="anchor" aria-label="anchor" href="#count-data-assays"><i class="fas fa-link"></i></a>
 </h2>
-<p>The count data</p>
-<div class="inline-figure"><img src="images/30_data/count_assays.png"></div>
+<p>We need a way to store the results from the probe hybridisation for each sample.
+The count data is represented as <code>assays</code> in a <code>SeuratObject</code>. These include the
+total RNA counts and the total negative control probe counts per cell.</p>
+<div class="inline-figure"><img src="images/30_data/count_assays.png" style="width:100.0%"></div>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">so</span><span class="op">@</span><span class="va">assays</span></span></code></pre></div>
 <pre><code>## $RNA
@@ -990,15 +992,15 @@ shows the table counts the number of cells for each sample.</p>
 ## MALAT1       24       35       10        6       24
 ## MZT2A        12       11        6       12       17
 ## IL16          2        .        .        .        .</code></pre>
-<p>Row = gene</p>
-<p>Column = cell for the sample</p>
+<p>Each row represents a gene, and the column shows the cell for that sample.</p>
 </div>
 <div id="negative-probes" class="section level3" number="4.7.2">
 <h3>
 <span class="header-section-number">4.7.2</span> Negative probes<a class="anchor" aria-label="anchor" href="#negative-probes"><i class="fas fa-link"></i></a>
 </h3>
-<p>Explain that negprobes are negative controls to see how noisy your data is.
-These do not bind to anything etc.</p>
+<p>Negative control probes, or <code>negprobes</code> are non-binding probes that indicate how
+much noise there is in your data. In this data, 19 <code>negprobes</code> are used. We will
+explore and utilise this more in the following quality control section.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">so</span><span class="op">@</span><span class="va">assays</span><span class="op">$</span><span class="va">negprobes</span></span></code></pre></div>
 <pre><code>## Assay (v5) data with 19 features for 68624 cells
@@ -1014,7 +1016,6 @@ These do not bind to anything etc.</p>
 ##  [7] "NegPrb12" "NegPrb8"  "NegPrb20" "NegPrb15" "NegPrb13" "NegPrb23"
 ## [13] "NegPrb10" "NegPrb9"  "NegPrb22" "NegPrb14" "NegPrb6"  "NegPrb21"
 ## [19] "NegPrb18"</code></pre>
-<p>19 different negative probes.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">so</span><span class="op">@</span><span class="va">assays</span><span class="op">$</span><span class="va">negprobes</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span></code></pre></div>
 <pre><code>## 19 x 8795 sparse Matrix of class "dgCMatrix"</code></pre>
@@ -1061,13 +1062,8 @@ These do not bind to anything etc.</p>
 ## 
 ##  .....suppressing 8762 columns in show(); maybe adjust options(max.print=, width=)
 ##  ..............................</code></pre>
-</div>
-</div>
-<div id="summary" class="section level2" number="4.8">
-<h2>
-<span class="header-section-number">4.8</span> Summary<a class="anchor" aria-label="anchor" href="#summary"><i class="fas fa-link"></i></a>
-</h2>
 
+</div>
 </div>
 </div>
 
@@ -1100,7 +1096,6 @@ These do not bind to anything etc.</p>
 <li><a class="nav-link" href="#negative-probes"><span class="header-section-number">4.7.2</span> Negative probes</a></li>
 </ul>
 </li>
-<li><a class="nav-link" href="#summary"><span class="header-section-number">4.8</span> Summary</a></li>
 </ul>
 
       <div class="book-extra">
@@ -1117,7 +1112,7 @@ These do not bind to anything etc.</p>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Intro to Spatial Transcriptomics</strong>" was written by . It was last built on 2025-10-23.</p>
+    <p>"<strong>Intro to Spatial Transcriptomics</strong>" was written by . It was last built on 2025-10-28.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

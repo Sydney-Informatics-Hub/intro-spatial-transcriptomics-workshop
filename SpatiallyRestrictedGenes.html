@@ -93,7 +93,7 @@ Requires packages:
 * Rfast2
 * ape
 -->
-<div class="sourceCode" id="cb145"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb144"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://satijalab.org/seurat">Seurat</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rstudio/DT">DT</a></span><span class="op">)</span></span></code></pre></div>
@@ -105,15 +105,15 @@ Requires packages:
 <span class="header-section-number">11.3</span> Run MoransI once<a class="anchor" aria-label="anchor" href="#run-moransi-once"><i class="fas fa-link"></i></a>
 </h2>
 <p>To run this quickly, going to arbitrarily reduce the number of variable features to just 15. In real life, we might pick all our VariableFeatures.</p>
-<div class="sourceCode" id="cb146"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb145"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">so</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/FindVariableFeatures.html">FindVariableFeatures</a></span><span class="op">(</span><span class="va">so</span>, nfeatures<span class="op">=</span><span class="fl">15</span><span class="op">)</span></span></code></pre></div>
 <p>First lets run it for a single sample by subsetting the object.</p>
-<div class="sourceCode" id="cb147"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb146"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">the_sample</span> <span class="op">&lt;-</span> <span class="st">'CD_a'</span></span>
 <span><span class="va">the_fov</span>    <span class="op">&lt;-</span> <span class="st">'GSM7473688.CD.a'</span></span>
 <span><span class="va">so_sample</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">so</span>, <span class="va">tissue_sample</span> <span class="op">==</span> <span class="va">the_sample</span><span class="op">)</span></span></code></pre></div>
 <p>There’s a current bug (<a href="https://github.com/satijalab/seurat/issues/10099">see ticket</a>) with the FindSpatiallyVariableFeatures function with this kind of data. We should be able to run it directly on the seurat object itself, but as a workaround, we will run it on the ‘RNA’ assay.</p>
-<div class="sourceCode" id="cb148"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb147"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># If the Seurat method above crashes (segfault), a workaround is</span></span>
 <span><span class="co"># running FindSpatiallyVariableFeatures at the assay level</span></span>
 <span><span class="va">so_sample_assay</span> <span class="op">&lt;-</span> <span class="va">so_sample</span><span class="op">[[</span><span class="st">'RNA'</span><span class="op">]</span><span class="op">]</span></span>
@@ -130,7 +130,7 @@ Requires packages:
 <span>  nfeatures<span class="op">=</span><span class="fl">10</span> <span class="co"># mark top 10 spatially variable</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>The results end up in the gene level metadata. Pull them out, but only display the genes we ran.</p>
-<div class="sourceCode" id="cb149"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb148"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#Put feature name as a column in the feature metadata</span></span>
 <span><span class="va">so_sample</span><span class="op">[[</span><span class="st">"RNA"</span><span class="op">]</span><span class="op">]</span><span class="op">@</span><span class="va">meta.data</span><span class="op">$</span><span class="va">feature</span> <span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">so_sample</span><span class="op">[[</span><span class="st">"RNA"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="va">gene_metadata</span> <span class="op">&lt;-</span> <span class="va">so_sample</span><span class="op">[[</span><span class="st">"RNA"</span><span class="op">]</span><span class="op">]</span><span class="op">@</span><span class="va">meta.data</span></span>
@@ -144,27 +144,27 @@ Requires packages:
 <span><span class="fu">DT</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/DT/man/datatable.html">datatable</a></span><span class="op">(</span><span class="va">gene_metadata_morans</span>, width <span class="op">=</span> <span class="st">'100%'</span><span class="op">)</span></span></code></pre></div>
 <div id="htmlwidget-697d58abce2053a24549" style="width:100%;height:auto;" class="datatables html-widget"></div>
 <script type="application/json" data-for="htmlwidget-697d58abce2053a24549">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15"],["OLFM4","JCHAIN","KRT20","IGHM","ITLN1","CEACAM1","AQP8","CHGA","SST","TPSAB1","GCG","TPSB2","CCL21","BEST4","CCL19"],[0.30619333935982,0.2944689935180447,0.223613836002665,0.2036567280691177,0.119609344076558,0.0906346105984384,0.05505019557288472,0.03872614871488655,0.01785281530558091,0.01222405268991915,0.01192338776046529,0.01164827439625598,0.01103139425239425,0.007166674095837011,0.001807613828264359],[0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.01658536585365854,0.5258536585365854],[true,true,true,true,true,true,true,true,true,true,false,false,false,false,false],[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>feature<\/th>\n      <th>MoransI_observed<\/th>\n      <th>MoransI_p.value<\/th>\n      <th>moransi.spatially.variable<\/th>\n      <th>moransi.spatially.variable.rank<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[2,3,5]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"feature","targets":1},{"name":"MoransI_observed","targets":2},{"name":"MoransI_p.value","targets":3},{"name":"moransi.spatially.variable","targets":4},{"name":"moransi.spatially.variable.rank","targets":5}],"order":[],"autoWidth":false,"orderClasses":false},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":[],"jsHooks":[]}</script><p>What do some of these genes look like on the tissue? How can we interpret this?</p>
-<div class="sourceCode" id="cb150"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb149"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://satijalab.org/seurat/reference/ImageDimPlot.html">ImageDimPlot</a></span><span class="op">(</span><span class="va">so_sample</span>, </span>
 <span>             molecules <span class="op">=</span> <span class="st">'IGHA1'</span>, </span>
 <span>             group.by <span class="op">=</span> <span class="st">'tissue_sample'</span>, cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"grey30"</span><span class="op">)</span>, <span class="co"># Make all cells grey.</span></span>
 <span>             boundaries <span class="op">=</span> <span class="st">"segmentation"</span>,</span>
 <span>             border.color <span class="op">=</span> <span class="cn">NA</span>, axes <span class="op">=</span> <span class="cn">T</span>, crop<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="va">the_sample</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-115-1.png" width="672"></div>
-<div class="sourceCode" id="cb151"><pre class="downlit sourceCode r">
+<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-114-1.png" width="672"></div>
+<div class="sourceCode" id="cb150"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://satijalab.org/seurat/reference/ImageDimPlot.html">ImageDimPlot</a></span><span class="op">(</span><span class="va">so_sample</span>, </span>
 <span>             molecules <span class="op">=</span> <span class="st">'AQP8'</span>, </span>
 <span>             group.by <span class="op">=</span> <span class="st">'tissue_sample'</span>, cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"grey30"</span><span class="op">)</span>, <span class="co"># Make all cells grey.</span></span>
 <span>             boundaries <span class="op">=</span> <span class="st">"segmentation"</span>,</span>
 <span>             border.color <span class="op">=</span> <span class="cn">NA</span>, axes <span class="op">=</span> <span class="cn">T</span>, crop<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="va">the_sample</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-115-2.png" width="672"></div>
-<div class="sourceCode" id="cb152"><pre class="downlit sourceCode r">
+<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-114-2.png" width="672"></div>
+<div class="sourceCode" id="cb151"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://satijalab.org/seurat/reference/ImageDimPlot.html">ImageDimPlot</a></span><span class="op">(</span><span class="va">so_sample</span>, </span>
 <span>             molecules <span class="op">=</span> <span class="st">'KRT20'</span>, </span>
 <span>             group.by <span class="op">=</span> <span class="st">'tissue_sample'</span>, cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"grey30"</span><span class="op">)</span>, <span class="co"># Make all cells grey.</span></span>
 <span>             boundaries <span class="op">=</span> <span class="st">"segmentation"</span>,</span>
 <span>             border.color <span class="op">=</span> <span class="cn">NA</span>, axes <span class="op">=</span> <span class="cn">T</span>, crop<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="va">the_sample</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-115-3.png" width="672"></div>
+<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-114-3.png" width="672"></div>
 </div>
 <div id="run-moransi-on-all-samples" class="section level2" number="11.4">
 <h2>
@@ -173,7 +173,7 @@ Requires packages:
 <p>Could it be that the expression pattern of a gene is disrupted? Is there a difference between samples or between groups?</p>
 <p>Lets run the test on every sample. This is slow - do not run on the workshop machines, instead load the precomputed results.</p>
 <p>For real life, it could be parallelised and/or run overnight.</p>
-<div class="sourceCode" id="cb153"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb152"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Do Not Run ##</span></span>
 <span></span>
 <span><span class="co"># Record moransI results for each sample, one by one.</span></span>
@@ -227,12 +227,12 @@ Requires packages:
 <span><span class="va">morans_results_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="st">"data"</span>, <span class="st">"morans_results.RDS"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span><span class="op">(</span><span class="va">results_all</span>, <span class="va">morans_results_file</span><span class="op">)</span></span></code></pre></div>
 <p>Load preprepared results file</p>
-<div class="sourceCode" id="cb154"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb153"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">morans_results_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="st">"data"</span>, <span class="st">"morans_results.RDS"</span><span class="op">)</span></span>
 <span><span class="va">results_all</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="va">morans_results_file</span><span class="op">)</span></span></code></pre></div>
 <p>Lets visualise our MoransI scores for each gene for each sample on a boxplot. Note that this isn’t an established standard way of interpreting these scores, but it does give us a way to prioritise what to look at.</p>
 <p>MoransI scores are between -1 (anticorrelated) and 1 (perfectly correlated) - 0 is random. The baseline isn’t 0 - probably because the observations are already limited to the tissue. But there’s still clearly some genes with higher scores than others, even though the variation between samples is quite high.</p>
-<div class="sourceCode" id="cb155"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb154"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># unique set of genes that were top 10 morans in any sample</span></span>
 <span><span class="va">plot_genes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">results_all</span>, <span class="va">moransi.spatially.variable.rank</span> <span class="op">&lt;=</span> <span class="fl">10</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">feature</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">results_all</span>, <span class="va">feature</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="va">plot_genes</span><span class="op">)</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">feature</span>, y<span class="op">=</span><span class="va">MoransI_observed</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
@@ -241,57 +241,57 @@ Requires packages:
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"MoransI Per sample"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">group</span>, ncol<span class="op">=</span><span class="fl">1</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-118-1.png" width="960"></div>
+<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-117-1.png" width="960"></div>
 </div>
 <div id="explore-moransi-results" class="section level2" number="11.5">
 <h2>
 <span class="header-section-number">11.5</span> Explore moransI results<a class="anchor" aria-label="anchor" href="#explore-moransi-results"><i class="fas fa-link"></i></a>
 </h2>
 <p>That doesn’t mean much in isolation, so lets look at the actual distribution of some of those.</p>
-<div class="sourceCode" id="cb156"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb155"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">so.CD_a</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span> <span class="va">so</span>, subset<span class="op">=</span> <span class="va">tissue_sample</span> <span class="op">==</span> <span class="st">'CD_a'</span><span class="op">)</span></span>
 <span><span class="va">so.HC_a</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span> <span class="va">so</span>, subset<span class="op">=</span> <span class="va">tissue_sample</span> <span class="op">==</span> <span class="st">'HC_a'</span><span class="op">)</span></span></code></pre></div>
-<p>IGKC has high autocorrelation all over</p>
-<div class="sourceCode" id="cb157"><pre class="downlit sourceCode r">
+<p>IGHM has high autocorrelation all over</p>
+<div class="sourceCode" id="cb156"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/ImageDimPlot.html">ImageDimPlot</a></span><span class="op">(</span><span class="va">so.CD_a</span>, </span>
-<span>             molecules <span class="op">=</span> <span class="st">'IGKC'</span>, </span>
+<span>             molecules <span class="op">=</span> <span class="st">'IGHM'</span>, </span>
 <span>             group.by <span class="op">=</span> <span class="st">'tissue_sample'</span>, cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"grey30"</span><span class="op">)</span>, <span class="co"># Make all cells grey.</span></span>
 <span>             boundaries <span class="op">=</span> <span class="st">"segmentation"</span>, border.color <span class="op">=</span> <span class="cn">NA</span>, axes <span class="op">=</span> <span class="cn">T</span>, crop<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">p2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/ImageDimPlot.html">ImageDimPlot</a></span><span class="op">(</span><span class="va">so.HC_a</span>, </span>
-<span>             molecules <span class="op">=</span> <span class="st">'IGKC'</span>, </span>
+<span>             molecules <span class="op">=</span> <span class="st">'IGHM'</span>, </span>
+<span>             group.by <span class="op">=</span> <span class="st">'tissue_sample'</span>, cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"grey30"</span><span class="op">)</span>, <span class="co"># Make all cells grey.</span></span>
+<span>             boundaries <span class="op">=</span> <span class="st">"segmentation"</span>, border.color <span class="op">=</span> <span class="cn">NA</span>, axes <span class="op">=</span> <span class="cn">T</span>, crop<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">p1</span> <span class="op">+</span> <span class="va">p2</span> </span></code></pre></div>
+<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-119-1.png" width="672"></div>
+<p>Contrast that with a CHGA - still a highly variable gene, with a low(er) spatial autocorrelation</p>
+<div class="sourceCode" id="cb157"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">p1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/ImageDimPlot.html">ImageDimPlot</a></span><span class="op">(</span><span class="va">so.CD_a</span>, </span>
+<span>             molecules <span class="op">=</span> <span class="st">'CHGA'</span>, </span>
+<span>             group.by <span class="op">=</span> <span class="st">'tissue_sample'</span>, cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"grey30"</span><span class="op">)</span>, <span class="co"># Make all cells grey.</span></span>
+<span>             boundaries <span class="op">=</span> <span class="st">"segmentation"</span>, border.color <span class="op">=</span> <span class="cn">NA</span>, axes <span class="op">=</span> <span class="cn">T</span>, crop<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">p2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/ImageDimPlot.html">ImageDimPlot</a></span><span class="op">(</span><span class="va">so.HC_a</span>, </span>
+<span>             molecules <span class="op">=</span> <span class="st">'CHGA'</span>, </span>
 <span>             group.by <span class="op">=</span> <span class="st">'tissue_sample'</span>, cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"grey30"</span><span class="op">)</span>, <span class="co"># Make all cells grey.</span></span>
 <span>             boundaries <span class="op">=</span> <span class="st">"segmentation"</span>, border.color <span class="op">=</span> <span class="cn">NA</span>, axes <span class="op">=</span> <span class="cn">T</span>, crop<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">p1</span> <span class="op">+</span> <span class="va">p2</span> </span></code></pre></div>
 <div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-120-1.png" width="672"></div>
-<p>Contrast that with a CHGA - still a highly variable gene, with a low(er) spatial autocorrelation</p>
+<p>CCL21 has a combination of high and low scores. Why?</p>
 <div class="sourceCode" id="cb158"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/ImageDimPlot.html">ImageDimPlot</a></span><span class="op">(</span><span class="va">so.CD_a</span>, </span>
-<span>             molecules <span class="op">=</span> <span class="st">'CHGA'</span>, </span>
+<span>             molecules <span class="op">=</span> <span class="st">'CCL21'</span>, </span>
 <span>             group.by <span class="op">=</span> <span class="st">'tissue_sample'</span>, cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"grey30"</span><span class="op">)</span>, <span class="co"># Make all cells grey.</span></span>
 <span>             boundaries <span class="op">=</span> <span class="st">"segmentation"</span>, border.color <span class="op">=</span> <span class="cn">NA</span>, axes <span class="op">=</span> <span class="cn">T</span>, crop<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">p2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/ImageDimPlot.html">ImageDimPlot</a></span><span class="op">(</span><span class="va">so.HC_a</span>, </span>
-<span>             molecules <span class="op">=</span> <span class="st">'CHGA'</span>, </span>
+<span>             molecules <span class="op">=</span> <span class="st">'CCL21'</span>, </span>
 <span>             group.by <span class="op">=</span> <span class="st">'tissue_sample'</span>, cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"grey30"</span><span class="op">)</span>, <span class="co"># Make all cells grey.</span></span>
 <span>             boundaries <span class="op">=</span> <span class="st">"segmentation"</span>, border.color <span class="op">=</span> <span class="cn">NA</span>, axes <span class="op">=</span> <span class="cn">T</span>, crop<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">p1</span> <span class="op">+</span> <span class="va">p2</span> </span></code></pre></div>
 <div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-121-1.png" width="672"></div>
-<p>CCL21 has a combination of high and low scores. Why?</p>
-<div class="sourceCode" id="cb159"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">p1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/ImageDimPlot.html">ImageDimPlot</a></span><span class="op">(</span><span class="va">so.CD_a</span>, </span>
-<span>             molecules <span class="op">=</span> <span class="st">'CCL21'</span>, </span>
-<span>             group.by <span class="op">=</span> <span class="st">'tissue_sample'</span>, cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"grey30"</span><span class="op">)</span>, <span class="co"># Make all cells grey.</span></span>
-<span>             boundaries <span class="op">=</span> <span class="st">"segmentation"</span>, border.color <span class="op">=</span> <span class="cn">NA</span>, axes <span class="op">=</span> <span class="cn">T</span>, crop<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="va">p2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/ImageDimPlot.html">ImageDimPlot</a></span><span class="op">(</span><span class="va">so.HC_a</span>, </span>
-<span>             molecules <span class="op">=</span> <span class="st">'CCL21'</span>, </span>
-<span>             group.by <span class="op">=</span> <span class="st">'tissue_sample'</span>, cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"grey30"</span><span class="op">)</span>, <span class="co"># Make all cells grey.</span></span>
-<span>             boundaries <span class="op">=</span> <span class="st">"segmentation"</span>, border.color <span class="op">=</span> <span class="cn">NA</span>, axes <span class="op">=</span> <span class="cn">T</span>, crop<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="va">p1</span> <span class="op">+</span> <span class="va">p2</span> </span></code></pre></div>
-<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-122-1.png" width="672"></div>
 <p>There’s a big clump of CCL21 at the bottom of HC_a, lets figure out which FOV that is and zoom in further. Now we can practically bring back the cluster labels.</p>
-<div class="sourceCode" id="cb160"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb159"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://satijalab.org/seurat/reference/ImageDimPlot.html">ImageDimPlot</a></span><span class="op">(</span><span class="va">so.HC_a</span>, group.by <span class="op">=</span> <span class="st">'fov'</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-123-1.png" width="672"></div>
-<div class="sourceCode" id="cb161"><pre class="downlit sourceCode r">
+<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-122-1.png" width="672"></div>
+<div class="sourceCode" id="cb160"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">so.HC_a.4</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">so.HC_a</span>, <span class="va">fov</span><span class="op">==</span><span class="fl">4</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://satijalab.org/seurat/reference/ImageDimPlot.html">ImageDimPlot</a></span><span class="op">(</span><span class="va">so.HC_a.4</span>, </span>
@@ -299,17 +299,17 @@ Requires packages:
 <span>             group.by   <span class="op">=</span> <span class="st">'cluster_labels'</span>, alpha<span class="op">=</span><span class="fl">0.3</span>,<span class="co"># Show clusters, but faded </span></span>
 <span>             cols <span class="op">=</span> <span class="st">'polychrome'</span>,</span>
 <span>             boundaries <span class="op">=</span> <span class="st">"segmentation"</span>,  border.color <span class="op">=</span> <span class="cn">NA</span>, axes <span class="op">=</span> <span class="cn">T</span>, crop<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> </span></code></pre></div>
-<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-123-2.png" width="672"></div>
+<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-122-2.png" width="672"></div>
 <p>That seems to be because of a group of T cells expressing CCL21’s. We can highlight those alongside our transcripts.</p>
-<div class="sourceCode" id="cb162"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb161"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Show only B and T cells</span></span>
-<span><span class="va">so.HC_a.4</span><span class="op">$</span><span class="va">isBT</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">so.HC_a.4</span><span class="op">$</span><span class="va">cluster_labels</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"c5: T cell"</span>, <span class="st">"c8: B cell"</span><span class="op">)</span>, <span class="va">so.HC_a.4</span><span class="op">$</span><span class="va">cluster_labels</span>, <span class="st">"Other"</span><span class="op">)</span></span>
+<span><span class="va">so.HC_a.4</span><span class="op">$</span><span class="va">isBT</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">so.HC_a.4</span><span class="op">$</span><span class="va">cluster_labels</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"c5: T cell"</span>, <span class="st">"c8: B cell"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="va">so.HC_a.4</span><span class="op">$</span><span class="va">cluster_labels</span><span class="op">)</span>, <span class="st">"Other"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://satijalab.org/seurat/reference/ImageDimPlot.html">ImageDimPlot</a></span><span class="op">(</span><span class="va">so.HC_a.4</span>, </span>
 <span>             molecules  <span class="op">=</span> <span class="st">'CCL21'</span>, </span>
 <span>             group.by   <span class="op">=</span> <span class="st">'isBT'</span>, alpha<span class="op">=</span><span class="fl">0.3</span>,<span class="co"># Show clusters, but faded </span></span>
 <span>             cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"c5: T cell"</span><span class="op">=</span><span class="st">'royalblue'</span>, <span class="st">"c8: B cell"</span><span class="op">=</span><span class="st">'aquamarine'</span>, <span class="st">'Other'</span><span class="op">=</span><span class="st">'grey80'</span><span class="op">)</span>,</span>
 <span>             boundaries <span class="op">=</span> <span class="st">"segmentation"</span>,  border.color <span class="op">=</span> <span class="cn">NA</span>, axes <span class="op">=</span> <span class="cn">T</span>, crop<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> </span></code></pre></div>
-<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-124-1.png" width="672"></div>
+<div class="inline-figure"><img src="IntroSpatialTranscriptomics_files/figure-html/unnamed-chunk-123-1.png" width="672"></div>
 <p>If we look at Garrido-Trigo et al’s paper - they highlight these kind of lymphoid niches, full of T, B and plasma cells. They go on to look at macrophage subtypes within these regions across different conditions.</p>
 <div class="inline-figure"><img src="images/GTFig2g_niche.png" style="width:100.0%"></div>
 <p>In our case, these could be more formally defined by a niche-neighbourhood analysis; which at the most basic level, classifies each cell into a ‘niche’ depending on what type of cells are in its immediate vicinity. We could then analyse our data at the ‘niche’ level.</p>
@@ -347,7 +347,7 @@ Requires packages:
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Intro to Spatial Transcriptomics</strong>" was written by . It was last built on 2025-10-23.</p>
+    <p>"<strong>Intro to Spatial Transcriptomics</strong>" was written by . It was last built on 2025-10-28.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
